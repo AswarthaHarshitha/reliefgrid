@@ -1,0 +1,4 @@
+code;name;descr
+GOOD;Good;All goods received are usable
+DAMAGED;Damaged;Some or all goods arrived damaged and are not usable
+REJECTED;Rejected;Some or all goods were refused at the camp

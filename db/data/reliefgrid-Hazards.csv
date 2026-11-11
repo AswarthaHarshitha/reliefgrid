@@ -1,0 +1,10 @@
+code;name;descr
+FLOOD;Flood;Riverine, flash or urban flooding
+CYCLONE;Cyclone;Tropical cyclone, storm surge and high winds
+EARTHQUAKE;Earthquake;Ground shaking, collapse and aftershocks
+LANDSLIDE;Landslide;Slope failure, mudflow and debris flow
+DROUGHT;Drought;Prolonged water and food scarcity
+HEATWAVE;Heatwave;Extreme heat affecting health and livelihoods
+FIRE;Fire;Wildfire or large urban fire
+CONFLICT;Displacement;Displacement caused by conflict or violence
+OTHER;Other;Any other hazard

@@ -1,0 +1,288 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "reliefgrid.camps",
+    "type": "application",
+    "title": "{{appTitle}}",
+    "subTitle": "{{appSubTitle}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "i18n": "i18n/i18n.properties",
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/relief/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "intent": {
+          "semanticObject": "ReliefCamp",
+          "action": "manage",
+          "title": "{{appTitle}}",
+          "subTitle": "{{appSubTitle}}",
+          "icon": "sap-icon://building",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "sap-icon://building"
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.136.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "reliefgrid.camps.i18n.i18n",
+          "supportedLocales": [
+            ""
+          ],
+          "fallbackLocale": ""
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "List",
+          "target": "List"
+        },
+        {
+          "pattern": "Camps({key}):?query:",
+          "name": "Detail",
+          "target": "Detail"
+        },
+        {
+          "pattern": "Camps({key})/requests({key2}):?query:",
+          "name": "RequestDetail",
+          "target": "RequestDetail"
+        },
+        {
+          "pattern": "Camps({key})/decisions({key2}):?query:",
+          "name": "DecisionDetail",
+          "target": "DecisionDetail"
+        },
+        {
+          "pattern": "Camps({key})/assessmentRecords({key2}):?query:",
+          "name": "RecordDetail",
+          "target": "RecordDetail"
+        }
+      ],
+      "targets": {
+        "List": {
+          "type": "Component",
+          "id": "List",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/Camps",
+              "variantManagement": "Page",
+              "initialLoad": "Enabled",
+              "navigation": {
+                "Camps": {
+                  "detail": {
+                    "route": "Detail"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "Single"
+                  },
+                  "actions": {
+                    "reviewRequests": {
+                      "press": "reliefgrid.camps.ext.Actions.reviewRequestsForSelected",
+                      "text": "{i18n>reviewRequests}",
+                      "requiresSelection": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Detail": {
+          "type": "Component",
+          "id": "Detail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/Camps",
+              "editableHeaderContent": false,
+              "navigation": {
+                "requests": {
+                  "detail": {
+                    "route": "RequestDetail"
+                  }
+                },
+                "decisions": {
+                  "detail": {
+                    "route": "DecisionDetail"
+                  }
+                },
+                "assessmentRecords": {
+                  "detail": {
+                    "route": "RecordDetail"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "stock/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "Single",
+                    "enableExport": true
+                  }
+                },
+                "requests/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "Single"
+                  }
+                },
+                "decisions/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "Single"
+                  }
+                },
+                "assessmentRecords/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "None"
+                  }
+                }
+              },
+              "content": {
+                "header": {
+                  "actions": {
+                    "reviewRequests": {
+                      "press": "reliefgrid.camps.ext.Actions.reviewRequests",
+                      "text": "{i18n>reviewRequests}",
+                      "visible": "{= %{IsActiveEntity} === true && %{status_code} === 'ACTIVE' }",
+                      "position": {
+                        "placement": "Before",
+                        "anchor": "DataFieldForAction::ReliefService.requestSupplies"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "RequestDetail": {
+          "type": "Component",
+          "id": "RequestDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/Camps/requests",
+              "editableHeaderContent": false,
+              "controlConfiguration": {
+                "pledges/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "Single"
+                  }
+                },
+                "reviews/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "None"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "DecisionDetail": {
+          "type": "Component",
+          "id": "DecisionDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/Camps/decisions",
+              "editableHeaderContent": false,
+              "controlConfiguration": {
+                "affectedRequests/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "Single"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "RecordDetail": {
+          "type": "Component",
+          "id": "RecordDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/Camps/assessmentRecords",
+              "editableHeaderContent": false,
+              "controlConfiguration": {
+                "lines/@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable",
+                    "selectionMode": "None"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

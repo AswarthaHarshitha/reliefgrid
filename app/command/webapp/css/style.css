@@ -1,0 +1,105 @@
+/* Relief Command Center: Horizon theme parameters keep light and dark themes consistent. */
+
+.rgPage .sapFDynamicPageContent {
+  padding-top: 0.5rem;
+}
+
+.rgHeadingIcon {
+  color: var(--sapBrandColor);
+}
+
+.rgSubtitle {
+  color: var(--sapContent_LabelColor);
+}
+
+.rgKpis {
+  gap: 1rem;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.rgKpi.sapMGT {
+  margin: 0;
+  box-shadow: var(--sapContent_Shadow0);
+}
+
+.rgTabs .sapMITH {
+  padding: 0 0.25rem;
+}
+
+.rgCard {
+  margin: 1rem 0 2rem;
+  padding: 1rem 1rem 0.5rem;
+  border-radius: var(--sapTile_BorderCornerRadius, 1rem);
+  background: var(--sapGroup_ContentBackground);
+  box-shadow: var(--sapContent_Shadow0);
+}
+
+.rgCard .sapMList,
+.rgCard .sapMListTbl {
+  background: transparent;
+}
+
+.rgLegend {
+  padding: 0 0 0.75rem;
+}
+
+.rgHint {
+  color: var(--sapContent_LabelColor);
+  font-size: var(--sapFontSmallSize);
+}
+
+.rgDisclaimer {
+  gap: 0.25rem 0;
+  padding: 0 0.25rem 1.5rem;
+}
+
+.rgHeatmap .sapMListTblCell {
+  vertical-align: middle;
+}
+
+.rgCell.sapMObjStatus {
+  min-width: 4.25rem;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.rgHeatmap .sapMListTblHeaderCell .sapMText {
+  font-size: var(--sapFontSmallSize);
+}
+
+@media (max-width: 599px) {
+  .rgKpis {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .rgKpi.sapMGT {
+    width: 100%;
+    height: 8.5rem;
+  }
+
+  .rgCard {
+    padding: 0.5rem 0.25rem;
+    border-radius: 0.75rem;
+  }
+}
+
+/* UX-09: the sector above each indicator column */
+.rgSectorLabel.sapMText {
+  font-size: 0.75rem;
+  color: var(--sapContent_LabelColor);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rgFilters {
+  margin-bottom: 0.25rem;
+}
+
+/* UX-08 */
+.rgActCamp.sapMText {
+  font-weight: 600;
+}
+.rgActKind {
+  min-width: 9rem;
+}

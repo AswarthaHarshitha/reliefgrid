@@ -1,0 +1,379 @@
+<mvc:View
+  controllerName="reliefgrid.methodology.controller.Main"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  xmlns:uxap="sap.uxap"
+  xmlns:form="sap.ui.layout.form"
+  xmlns:layout="sap.ui.layout"
+  xmlns="sap.m"
+  core:require="{formatter: 'reliefgrid/methodology/model/formatter'}"
+  displayBlock="true"
+  height="100%">
+
+  <uxap:ObjectPageLayout id="page" class="rmPage" upperCaseAnchorBar="false" toggleHeaderOnTitleClick="true"
+    headerContentPinnable="true" subSectionLayout="TitleOnTop" enableLazyLoading="false" showFooter="false">
+    <uxap:headerTitle>
+      <uxap:ObjectPageDynamicHeaderTitle>
+        <uxap:heading>
+          <HBox alignItems="Center">
+            <core:Icon src="sap-icon://course-book" size="1.5rem" class="sapUiSmallMarginEnd rmHeadingIcon" decorative="true"/>
+            <Title text="{i18n>title}" level="H1" wrapping="true"/>
+          </HBox>
+        </uxap:heading>
+        <uxap:expandedContent>
+          <Text text="{i18n>subtitle}" class="rmSubtitle"/>
+        </uxap:expandedContent>
+        <uxap:snappedContent>
+          <Text text="{i18n>subtitle}" class="rmSubtitle"/>
+        </uxap:snappedContent>
+      </uxap:ObjectPageDynamicHeaderTitle>
+    </uxap:headerTitle>
+
+    <uxap:headerContent>
+      <FlexBox wrap="Wrap" class="rmFacts" renderType="Bare">
+        <VBox class="rmFact" renderType="Bare">
+          <Label text="{i18n>kfIndicators}" wrapping="true"/>
+          <Text text="{= ${/indicators}.length }" class="rmFactValue"/>
+        </VBox>
+        <VBox class="rmFact" renderType="Bare">
+          <Label text="{i18n>kfSphere}" wrapping="true"/>
+          <Text text="{parts: [{path: '/indicators'}, {value: 'sphere'}], formatter: 'formatter.count'}" class="rmFactValue"/>
+        </VBox>
+        <VBox class="rmFact" renderType="Bare">
+          <Label text="{i18n>kfDerived}" wrapping="true"/>
+          <Text text="{parts: [{path: '/indicators'}, {value: 'converted,planning'}], formatter: 'formatter.count'}" class="rmFactValue"/>
+        </VBox>
+        <VBox class="rmFact" renderType="Bare">
+          <Label text="{i18n>kfEdition}" wrapping="true"/>
+          <Text text="{/source/edition}" class="rmFactValue rmFactText"/>
+        </VBox>
+      </FlexBox>
+      <MessageStrip id="disclaimer" type="Information" showIcon="true" enableFormattedText="true" class="rmDisclaimer"
+        text="{= '&lt;strong&gt;' + ${i18n>disclaimerTitle} + '.&lt;/strong&gt; ' + ${i18n>disclaimer} }"/>
+    </uxap:headerContent>
+
+    <uxap:sections>
+      <!-- Overview -->
+      <uxap:ObjectPageSection id="overview" title="{i18n>secOverview}" titleUppercase="false">
+        <uxap:subSections>
+          <uxap:ObjectPageSubSection id="howToRead" title="{i18n>subHowToRead}" titleUppercase="false">
+            <uxap:blocks>
+              <VBox renderType="Bare">
+                <Text text="{i18n>legendIntro}" class="rmLead"/>
+                <layout:Grid defaultSpan="XL6 L6 M12 S12" hSpacing="1" vSpacing="1" class="rmLegend">
+                  <VBox class="rmPanel" renderType="Bare">
+                    <Title text="{i18n>legendVerification}" level="H4" class="rmPanelTitle"/>
+                    <VBox class="rmLegendRow" renderType="Bare">
+                      <ObjectStatus text="{i18n>verification.verified}" state="Success" icon="sap-icon://sys-enter-2" inverted="true"/>
+                      <Text text="{i18n>verification.verified.text}"/>
+                    </VBox>
+                    <VBox class="rmLegendRow" renderType="Bare">
+                      <ObjectStatus text="{i18n>verification.conditional}" state="Information" icon="sap-icon://hint" inverted="true"/>
+                      <Text text="{i18n>verification.conditional.text}"/>
+                    </VBox>
+                    <VBox class="rmLegendRow" renderType="Bare">
+                      <ObjectStatus text="{i18n>verification.notSphere}" state="Error" icon="sap-icon://decline" inverted="true"/>
+                      <Text text="{i18n>verification.notSphere.text}"/>
+                    </VBox>
+                  </VBox>
+                  <VBox class="rmPanel" renderType="Bare">
+                    <Title text="{i18n>legendValueType}" level="H4" class="rmPanelTitle"/>
+                    <VBox class="rmLegendRow" renderType="Bare">
+                      <ObjectStatus text="{i18n>valueType.sphere}" state="Information" icon="sap-icon://course-book" inverted="true"/>
+                      <Text text="{i18n>valueType.sphere.text}"/>
+                    </VBox>
+                    <VBox class="rmLegendRow" renderType="Bare">
+                      <ObjectStatus text="{i18n>valueType.converted}" state="Information" icon="sap-icon://simulate" inverted="true"/>
+                      <Text text="{i18n>valueType.converted.text}"/>
+                    </VBox>
+                    <VBox class="rmLegendRow" renderType="Bare">
+                      <ObjectStatus text="{i18n>valueType.planning}" state="Warning" icon="sap-icon://user-edit" inverted="true"/>
+                      <Text text="{i18n>valueType.planning.text}"/>
+                    </VBox>
+                  </VBox>
+                </layout:Grid>
+              </VBox>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+
+          <uxap:ObjectPageSubSection id="atAGlance" title="{i18n>subAtAGlance}" titleUppercase="false">
+            <uxap:blocks>
+              <Table id="summary" items="{/indicators}" popinLayout="GridSmall" class="rmTable">
+                <columns>
+                  <Column width="12rem"><Text text="{i18n>colIndicator}"/></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colSphereReference}"/></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colCalculation}"/></Column>
+                  <Column width="13rem" minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colVerification}"/></Column>
+                  <Column width="15rem" minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colValueType}"/></Column>
+                  <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colReference}"/></Column>
+                </columns>
+                <items>
+                  <ColumnListItem type="Navigation" press=".onIndicatorPress">
+                    <cells>
+                      <ObjectIdentifier title="{name}" text="{sector}"/>
+                      <Text text="{path: 'reference', formatter: 'formatter.referenceText'}"/>
+                      <Text text="{path: 'calculation', formatter: 'formatter.calculation'}"/>
+                      <ObjectStatus text="{path: 'verification', formatter: '.verificationText'}" inverted="true"
+                        state="{path: 'verification', formatter: 'formatter.verificationState'}"
+                        icon="{path: 'verification', formatter: 'formatter.verificationIcon'}"/>
+                      <ObjectStatus text="{path: 'valueType', formatter: '.valueTypeText'}" inverted="true"
+                        state="{path: 'valueType', formatter: 'formatter.valueTypeState'}"
+                        icon="{path: 'valueType', formatter: 'formatter.valueTypeIcon'}"/>
+                      <VBox renderType="Bare">
+                        <Text text="{standard}"/>
+                        <Text text="{path: 'pages', formatter: '.pagesText'}" class="rmHint"/>
+                      </VBox>
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+        </uxap:subSections>
+      </uxap:ObjectPageSection>
+
+      <!-- One subsection per indicator -->
+      <uxap:ObjectPageSection id="indicators" title="{i18n>secIndicators}" titleUppercase="false"
+        subSections="{path: '/indicators', templateShareable: false}">
+        <uxap:subSections>
+          <uxap:ObjectPageSubSection title="{name}" titleUppercase="false" class="rmIndicator">
+            <uxap:blocks>
+              <VBox renderType="Bare">
+                <FlexBox wrap="Wrap" alignItems="Center" class="rmBadges" renderType="Bare">
+                  <ObjectStatus text="{path: 'verification', formatter: '.verificationText'}" inverted="true"
+                    state="{path: 'verification', formatter: 'formatter.verificationState'}"
+                    icon="{path: 'verification', formatter: 'formatter.verificationIcon'}"
+                    tooltip="{i18n>colVerification}"/>
+                  <ObjectStatus text="{path: 'valueType', formatter: '.valueTypeText'}" inverted="true"
+                    state="{path: 'valueType', formatter: 'formatter.valueTypeState'}"
+                    icon="{path: 'valueType', formatter: 'formatter.valueTypeIcon'}"
+                    tooltip="{i18n>colValueType}"/>
+                </FlexBox>
+
+                <layout:Grid defaultSpan="XL6 L6 M6 S12" hSpacing="1" vSpacing="1" class="rmFigures">
+                  <VBox class="rmFigure" renderType="Bare">
+                    <Label text="{i18n>figSphere}" wrapping="true"/>
+                    <Text text="{reference/value}" class="rmFigureValue"/>
+                    <Text text="{reference/unit}" class="rmFigureUnit"/>
+                  </VBox>
+                  <VBox class="rmFigure" renderType="Bare">
+                    <Label text="{i18n>figCalculation}" wrapping="true"/>
+                    <Text text="{path: 'calculation', formatter: '.calculationValue'}" class="rmFigureValue"/>
+                    <Text text="{calculation/unit} {calculation/per}" class="rmFigureUnit"/>
+                  </VBox>
+                </layout:Grid>
+
+                <VBox class="rmQuote" renderType="Bare">
+                  <Label text="{path: 'quotePage', formatter: '.quoteLabel'}"/>
+                  <Text text="“{quote}”" class="rmQuoteText"/>
+                </VBox>
+
+                <form:SimpleForm editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2"
+                  labelSpanL="4" labelSpanM="4" class="rmReference">
+                  <Label text="{i18n>lblChapter}"/>
+                  <Text text="{chapter}"/>
+                  <Label text="{i18n>lblStandard}"/>
+                  <Text text="{standard}"/>
+                  <Label text="{i18n>lblElement}"/>
+                  <Text text="{element}"/>
+                  <Label text="{i18n>lblPages}"/>
+                  <Text text="{pages}"/>
+                </form:SimpleForm>
+
+                <Title text="{i18n>summaryLabel}" level="H4" class="rmBlockTitle"/>
+                <Text text="{summary}"/>
+                <Title text="{i18n>qualificationsLabel}" level="H4" class="rmBlockTitle"/>
+                <FormattedText htmlText="{path: 'qualifications', formatter: 'formatter.bulletList'}" class="rmList"/>
+                <Title text="{i18n>useLabel}" level="H4" class="rmBlockTitle"/>
+                <Text text="{use}"/>
+              </VBox>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+        </uxap:subSections>
+      </uxap:ObjectPageSection>
+
+      <!-- Planning choices -->
+      <uxap:ObjectPageSection id="planning" title="{i18n>secPlanning}" titleUppercase="false">
+        <uxap:subSections>
+          <uxap:ObjectPageSubSection id="planningChoices" title="{i18n>secPlanning}" titleUppercase="false" showTitle="false">
+            <uxap:blocks>
+              <VBox renderType="Bare">
+                <MessageStrip text="{i18n>planningIntro}" type="Warning" showIcon="true" class="rmLead"/>
+                <FlexBox id="settingsState" wrap="Wrap" alignItems="Center" justifyContent="SpaceBetween" class="rmSettingsState" renderType="Bare">
+                  <VBox renderType="Bare">
+                    <Title text="{i18n>settingsTitle}" level="H4"/>
+                    <Text id="settingsStatus" text="{/settingsState/status}"/>
+                  </VBox>
+                  <Button id="changeSettings" text="{i18n>changeSettings}" icon="sap-icon://edit" type="Emphasized"
+                    visible="{= !!${/settingsState/canChange} }" press=".onChangeSettings"/>
+                </FlexBox>
+                <Table id="planningTable" items="{/planningChoices}" popinLayout="GridSmall" class="rmTable">
+                  <columns>
+                    <Column width="16rem"><Text text="{i18n>colChoice}"/></Column>
+                    <Column><Text text="{i18n>colValue}"/></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colUsedFor}"/></Column>
+                    <Column width="16rem" minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colLabel}"/></Column>
+                  </columns>
+                  <items>
+                    <ColumnListItem>
+                      <cells>
+                        <VBox renderType="Bare">
+                          <Text text="{choice}" class="rmStrong"/>
+                          <Text text="{i18n>settingsAdjustable}" class="rmHint" visible="{= !!${setting} }"/>
+                        </VBox>
+                        <Text text="{value}"/>
+                        <Text text="{usedFor}"/>
+                        <ObjectStatus text="{i18n>planningTag}" state="Warning" icon="sap-icon://user-edit"/>
+                      </cells>
+                    </ColumnListItem>
+                  </items>
+                </Table>
+                <FlexBox id="householdState" wrap="Wrap" alignItems="Center" justifyContent="SpaceBetween" class="rmSettingsState sapUiMediumMarginTop" renderType="Bare">
+                  <VBox renderType="Bare">
+                    <Title text="{i18n>householdTitle}" level="H4"/>
+                    <Text id="householdStatus" text="{/householdState/status}"/>
+                  </VBox>
+                  <Button id="changeHousehold" text="{i18n>changeHousehold}" icon="sap-icon://edit"
+                    visible="{= !!${/householdState/canChange} }" press=".onChangeHousehold"/>
+                </FlexBox>
+                <MessageStrip id="householdProposal" text="{/householdState/proposal}" type="Information" showIcon="true" class="sapUiSmallMarginTop"
+                  visible="{= !!${/householdState/proposal} }"/>
+                <FlexBox id="householdProposalActions" wrap="Wrap" justifyContent="End" renderType="Bare" class="sapUiTinyMarginTop rgActions"
+                  visible="{= !!${/householdState/canDecide} || !!${/householdState/canWithdraw} }">
+                  <Button id="approveHousehold" text="{i18n>approveHousehold}" type="Accept" icon="sap-icon://accept"
+                    visible="{= !!${/householdState/canDecide} }" press=".onApproveHousehold" class="sapUiTinyMarginEnd"/>
+                  <Button id="rejectHousehold" text="{i18n>rejectHousehold}" type="Reject" icon="sap-icon://decline"
+                    visible="{= !!${/householdState/canDecide} }" press=".onRejectHousehold"/>
+                  <Button id="withdrawHousehold" text="{i18n>withdrawHousehold}" icon="sap-icon://undo"
+                    visible="{= !!${/householdState/canWithdraw} }" press=".onWithdrawHousehold"/>
+                </FlexBox>
+                <Table id="householdHistory" items="{/householdHistory}" popinLayout="GridSmall" class="rmTable sapUiSmallMarginTop"
+                  visible="{= ${/householdHistory}.length > 0 }">
+                  <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                      <Title text="{i18n>householdHistoryTitle}" level="H4"/>
+                    </OverflowToolbar>
+                  </headerToolbar>
+                  <columns>
+                    <Column width="11rem"><Text text="{i18n>colChangedAt}"/></Column>
+                    <Column width="9rem" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colProposedBy}"/></Column>
+                    <Column width="9rem" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colApprovedBy}"/></Column>
+                    <Column><Text text="{i18n>colReason}"/></Column>
+                    <Column width="7rem"><Text text="{i18n>colBefore}"/></Column>
+                    <Column width="7rem"><Text text="{i18n>colAfter}"/></Column>
+                  </columns>
+                  <items>
+                    <ColumnListItem>
+                      <cells>
+                        <Text text="{changedAtText}"/>
+                        <Text text="{proposedBy}"/>
+                        <Text text="{changedBy}"/>
+                        <Text text="{reason}"/>
+                        <Text text="{before}"/>
+                        <Text text="{after}"/>
+                      </cells>
+                    </ColumnListItem>
+                  </items>
+                </Table>
+                <Table id="historyTable" items="{/settingsHistory}" popinLayout="GridSmall" class="rmTable sapUiMediumMarginTop"
+                  visible="{= ${/settingsHistory}.length > 0 }">
+                  <headerToolbar>
+                    <OverflowToolbar style="Clear">
+                      <Title text="{i18n>historyTitle}" level="H4"/>
+                    </OverflowToolbar>
+                  </headerToolbar>
+                  <columns>
+                    <Column width="11rem"><Text text="{i18n>colChangedAt}"/></Column>
+                    <Column width="9rem" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colChangedBy}"/></Column>
+                    <Column><Text text="{i18n>colReason}"/></Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colBefore}"/></Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colAfter}"/></Column>
+                  </columns>
+                  <items>
+                    <ColumnListItem>
+                      <cells>
+                        <Text text="{changedAtText}"/>
+                        <Text text="{changedBy}"/>
+                        <Text text="{reason}"/>
+                        <Text text="{before}"/>
+                        <Text text="{after}"/>
+                      </cells>
+                    </ColumnListItem>
+                  </items>
+                </Table>
+              </VBox>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+        </uxap:subSections>
+      </uxap:ObjectPageSection>
+
+      <!-- Local targets (B4.2) -->
+      <uxap:ObjectPageSection id="localTargets" title="{i18n>secLocalTargets}" titleUppercase="false">
+        <uxap:subSections>
+          <uxap:ObjectPageSubSection id="localTargetNotes" title="{i18n>secLocalTargets}" titleUppercase="false" showTitle="false">
+            <uxap:blocks>
+              <VBox renderType="Bare">
+                <Text text="{i18n>localTargetsIntro}"/>
+                <FormattedText htmlText="{path: '/localTargets', formatter: 'formatter.bulletList'}" class="rmList"/>
+              </VBox>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+        </uxap:subSections>
+      </uxap:ObjectPageSection>
+
+      <!-- Interpretation -->
+      <uxap:ObjectPageSection id="interpretation" title="{i18n>secInterpretation}" titleUppercase="false">
+        <uxap:subSections>
+          <uxap:ObjectPageSubSection id="interpretationNotes" title="{i18n>secInterpretation}" titleUppercase="false" showTitle="false">
+            <uxap:blocks>
+              <VBox renderType="Bare">
+                <Text text="{i18n>interpretationIntro}"/>
+                <FormattedText htmlText="{path: '/interpretation', formatter: 'formatter.bulletList'}" class="rmList"/>
+              </VBox>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+        </uxap:subSections>
+      </uxap:ObjectPageSection>
+
+      <!-- Source -->
+      <uxap:ObjectPageSection id="source" title="{i18n>secSource}" titleUppercase="false">
+        <uxap:subSections>
+          <uxap:ObjectPageSubSection id="sourceDetails" title="{i18n>secSource}" titleUppercase="false" showTitle="false">
+            <uxap:blocks>
+              <VBox renderType="Bare">
+                <form:SimpleForm editable="false" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1"
+                  labelSpanL="3" labelSpanM="3" class="rmReference">
+                  <Label text="{i18n>lblTitle}"/>
+                  <Text text="{/source/title}"/>
+                  <Label text="{i18n>lblEdition}"/>
+                  <Text text="{/source/edition}"/>
+                  <Label text="{i18n>lblPublisher}"/>
+                  <Text text="{/source/publisher}"/>
+                  <Label text="{i18n>lblIsbn}"/>
+                  <Text text="{/source/isbn}"/>
+                  <Label text="{i18n>lblOfficialEditions}"/>
+                  <Link id="officialEditions" text="{/source/officialEditionsUrl}" href="{/source/officialEditionsUrl}" target="_blank" wrapping="true"/>
+                  <Label text="{i18n>lblRevisionFaq}"/>
+                  <Link id="officialRevisionFaq" text="{/source/officialRevisionFaqUrl}" href="{/source/officialRevisionFaqUrl}" target="_blank" wrapping="true"/>
+                  <Label text="{i18n>lblCopy}"/>
+                  <Link text="{/source/copyUrl}" href="{/source/copyUrl}" target="_blank" wrapping="true"/>
+                  <Label text="{i18n>lblCopyPages}"/>
+                  <Text text="{/source/copyPages}"/>
+                  <Label text="{i18n>lblChecksum}"/>
+                  <Text text="{/source/sha256}" class="rmMono"/>
+                  <Label text="{i18n>lblPageNumbers}"/>
+                  <Text text="{/source/pageNumbers}"/>
+                </form:SimpleForm>
+                <MessageStrip id="editionStatus" type="Information" showIcon="true" enableFormattedText="true" class="sapUiSmallMarginTop"
+                  text="{= '&lt;strong&gt;' + ${i18n>editionStatusTitle} + '.&lt;/strong&gt; ' + ${/source/editionStatus} }"/>
+                <MessageStrip id="verificationLimits" type="Warning" showIcon="true" enableFormattedText="true" class="sapUiSmallMarginTop"
+                  text="{= '&lt;strong&gt;' + ${i18n>verificationTitle} + '.&lt;/strong&gt; ' + ${/source/verificationNote} }"/>
+                <Text text="{/source/copyright}" class="rmHint sapUiSmallMarginTop"/>
+              </VBox>
+            </uxap:blocks>
+          </uxap:ObjectPageSubSection>
+        </uxap:subSections>
+      </uxap:ObjectPageSection>
+    </uxap:sections>
+  </uxap:ObjectPageLayout>
+</mvc:View>

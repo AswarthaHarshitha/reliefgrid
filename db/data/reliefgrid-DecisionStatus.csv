@@ -1,0 +1,8 @@
+code;name;descr;criticality
+DRAFT;Draft;Being prepared by the proposer and not yet submitted;0
+PENDING;Pending approval;Submitted and waiting for an Administrator other than the proposer;2
+SCHEDULED;Scheduled;Approved and takes effect on its effective date;0
+APPROVED;In force;Approved and in force;3
+REJECTED;Rejected;Not approved and kept in the history;0
+WITHDRAWN;Withdrawn;Withdrawn by the proposer, or ended by an approved withdrawal;0
+SUPERSEDED;Superseded;Replaced by a later approved decision;0

@@ -1,0 +1,3 @@
+code;name;descr
+KEEP;Keep;Keep the request as it is
+CANCEL;Cancel;Cancel the request, or only its unpledged remainder when donors have pledged

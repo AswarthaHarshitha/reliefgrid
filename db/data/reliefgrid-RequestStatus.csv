@@ -1,0 +1,6 @@
+code;name;descr;criticality
+OPEN;Open;No pledges yet;1
+PARTIAL;Partially pledged;Some quantity is still unpledged;2
+PLEDGED;Fully pledged;Donors have committed the full quantity;3
+FULFILLED;Fulfilled;The full quantity has been delivered;3
+CANCELLED;Cancelled;Request withdrawn by the camp;0

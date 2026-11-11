@@ -1,0 +1,108 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "reliefgrid.methodology",
+    "type": "application",
+    "title": "{{appTitle}}",
+    "subTitle": "{{appSubTitle}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "i18n": "i18n/i18n.properties",
+    "dataSources": {
+      "methodology": {
+        "uri": "model/methodology.json",
+        "type": "JSON"
+      },
+      "relief": {
+        "uri": "/odata/v4/relief/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "display": {
+          "semanticObject": "ReliefMethodology",
+          "action": "display",
+          "title": "{{appTitle}}",
+          "subTitle": "{{appSubTitle}}",
+          "icon": "sap-icon://course-book",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "sap-icon://course-book"
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "reliefgrid.methodology.view.Main",
+      "type": "XML",
+      "id": "main"
+    },
+    "dependencies": {
+      "minUI5Version": "1.136.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ui.layout": {},
+        "sap.uxap": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "reliefgrid.methodology.i18n.i18n",
+          "supportedLocales": [
+            ""
+          ],
+          "fallbackLocale": ""
+        }
+      },
+      "": {
+        "dataSource": "methodology",
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "relief": {
+        "dataSource": "relief",
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "groupId": "$auto"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "reference"
+  }
+}

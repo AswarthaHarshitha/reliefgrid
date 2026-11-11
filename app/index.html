@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReliefGrid</title>
+    <style>
+      html, body, #canvas { height: 100%; margin: 0; }
+
+      /* ---- ReliefGrid home (shown when no application is open) ---- */
+      :root {
+        --rg-bg: #f5f6f7;
+        --rg-bg-accent: #e8f1fb;
+        --rg-surface: #ffffff;
+        --rg-text: #1d2d3e;
+        --rg-muted: #556b82;
+        --rg-line: #d9dee3;
+        --rg-brand: #0a6ed1;
+        --rg-on-brand: #ffffff;
+        --rg-focus: #0070f2;
+        --rg-shadow: 0 1px 2px rgba(29, 45, 62, 0.06), 0 6px 18px rgba(29, 45, 62, 0.07);
+        --rg-shadow-hover: 0 2px 4px rgba(29, 45, 62, 0.08), 0 12px 28px rgba(29, 45, 62, 0.12);
+        --rg-c1: #0a6ed1; --rg-c1-bg: #e5f0fb;
+        --rg-c2: #188918; --rg-c2-bg: #e7f4e7;
+        --rg-c3: #c0399f; --rg-c3-bg: #faeaf6;
+        --rg-c4: #7858ff; --rg-c4-bg: #efebff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --rg-bg: #12171c;
+          --rg-bg-accent: #16222e;
+          --rg-surface: #1d232a;
+          --rg-text: #eaecee;
+          --rg-muted: #a9b4be;
+          --rg-line: #354a5f;
+          --rg-brand: #4db1ff;
+          --rg-on-brand: #0b1a28;
+          --rg-focus: #4db1ff;
+          --rg-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(0, 0, 0, 0.3);
+          --rg-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.45), 0 12px 28px rgba(0, 0, 0, 0.4);
+          --rg-c1: #4db1ff; --rg-c1-bg: #13304a;
+          --rg-c2: #6fd16f; --rg-c2-bg: #173a1d;
+          --rg-c3: #f28ad8; --rg-c3-bg: #3d1a36;
+          --rg-c4: #b3a2ff; --rg-c4-bg: #2a2252;
+        }
+      }
+      body.rg-home {
+        font-family: "72", "72full", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        color: var(--rg-text);
+        background: radial-gradient(1400px 520px at 50% -120px, var(--rg-bg-accent), var(--rg-bg) 75%) no-repeat, var(--rg-bg);
+        line-height: 1.5;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      body.rg-home #canvas { display: none; }
+      .rg-wrap { width: 100%; max-width: 72rem; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; }
+      .rg-top { border-bottom: 1px solid var(--rg-line); background: color-mix(in srgb, var(--rg-surface) 82%, transparent); backdrop-filter: blur(6px); }
+      .rg-top .rg-wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4rem; }
+      .rg-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: inherit; }
+      .rg-brand svg { flex: none; }
+      .rg-brand b { font-size: 1.125rem; letter-spacing: 0.01em; }
+      .rg-chip { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.8rem; border: 1px solid var(--rg-line); border-radius: 999px; font-size: 0.8125rem; color: var(--rg-muted); background: var(--rg-surface); white-space: nowrap; }
+      .rg-chip::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--rg-c2); }
+      .rg-hero { padding: 3rem 0 2rem; }
+      .rg-hero h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 0.5rem; font-weight: 700; letter-spacing: -0.01em; }
+      .rg-hero p { margin: 0; color: var(--rg-muted); font-size: 1.0625rem; max-width: 44rem; }
+      .rg-grid { list-style: none; margin: 0; padding: 0 0 3rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+      .rg-card {
+        display: grid; grid-template-columns: 3rem 1fr; grid-template-rows: auto 1fr auto; column-gap: 1rem;
+        height: 100%; box-sizing: border-box; padding: 1.5rem; border-radius: 1rem;
+        background: var(--rg-surface); border: 1px solid var(--rg-line); box-shadow: var(--rg-shadow);
+        color: inherit; text-decoration: none; transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+      }
+      .rg-card:hover { box-shadow: var(--rg-shadow-hover); transform: translateY(-2px); border-color: var(--accent); }
+      .rg-card:focus-visible { outline: 2px solid var(--rg-focus); outline-offset: 3px; }
+      .rg-icon { grid-row: 1 / span 3; width: 3rem; height: 3rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; background: var(--accent-bg); color: var(--accent); }
+      .rg-card h2 { margin: 0.1rem 0 0.35rem; font-size: 1.1875rem; line-height: 1.3; font-weight: 700; }
+      .rg-card p { margin: 0 0 1.25rem; color: var(--rg-muted); font-size: 0.9375rem; }
+      .rg-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--rg-line); font-size: 0.8125rem; }
+      .rg-meta span { color: var(--rg-muted); }
+      .rg-meta strong { color: var(--accent); font-weight: 700; white-space: nowrap; }
+      .rg-meta strong::after { content: " \2192"; }
+      .rg-foot { margin-top: auto; border-top: 1px solid var(--rg-line); }
+      .rg-foot .rg-wrap { padding-top: 1.25rem; padding-bottom: 1.5rem; color: var(--rg-muted); font-size: 0.8125rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem; }
+      @media (max-width: 52rem) {
+        .rg-grid { grid-template-columns: minmax(0, 1fr); }
+      }
+      @media (max-width: 30rem) {
+        .rg-wrap { padding: 0 1rem; }
+        .rg-hero { padding: 2rem 0 1.5rem; }
+        .rg-hero h1 { font-size: 1.625rem; }
+        .rg-card { padding: 1.25rem; grid-template-columns: 2.5rem 1fr; column-gap: 0.875rem; }
+        .rg-icon { width: 2.5rem; height: 2.5rem; }
+        .rg-chip { display: none; }
+      }
+    </style>
+    <script>
+      (function () {
+        var ICONS = {
+          heatmap: '<path d="M4 4h4v4H4zM10 4h4v4h-4zM16 4h4v4h-4zM4 10h4v4H4zM10 10h4v4h-4zM16 10h4v4h-4zM4 16h4v4H4zM10 16h4v4h-4zM16 16h4v4h-4z" fill="currentColor" fill-opacity=".35"/><path d="M10 10h4v4h-4zM16 4h4v4h-4zM4 16h4v4H4z" fill="currentColor"/>',
+          camp: '<path d="M12 3 2 20h20L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9 7.5 20h9L12 9Z" fill="currentColor"/>',
+          pledge: '<path d="M12 20s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 10c0 5.65-7 10-7 10Z" fill="currentColor"/>',
+          book: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5Z" fill="currentColor"/>'
+        };
+        var apps = [
+          {
+            id: "command", semanticObject: "ReliefNetwork", action: "monitor", component: "reliefgrid.command",
+            title: "Relief Command Center", subtitle: "Indicator heatmap", icon: "heatmap", accent: 1,
+            description: "Every active camp's indicators at a glance, the decisions waiting for approval and the local targets due for review.",
+            audience: "Coordinators and administrators"
+          },
+          {
+            id: "camps", semanticObject: "ReliefCamp", action: "manage", component: "reliefgrid.camps",
+            title: "Manage Relief Camps", subtitle: "Counts and gaps", icon: "camp", accent: 2,
+            description: "Record counts, see each camp's gaps against its requirements and raise supply requests.",
+            audience: "Coordinators"
+          },
+          {
+            id: "pledge", semanticObject: "SupplyRequest", action: "pledge", component: "reliefgrid.pledge",
+            title: "Pledge Board", subtitle: "Open camp needs", icon: "pledge", accent: 3,
+            description: "Browse the open needs of relief camps and pledge supplies to meet them.",
+            audience: "Donors"
+          },
+          {
+            id: "methodology", semanticObject: "ReliefMethodology", action: "display", component: "reliefgrid.methodology",
+            title: "Methodology and References", subtitle: "How needs are set", icon: "book", accent: 4,
+            description: "How each requirement is worked out: the Sphere Handbook 2018 figures, response phases, households and local targets.",
+            audience: "Everyone"
+          }
+        ];
+        // Which apps this user can open. Display only: the services enforce every permission themselves.
+        // Synchronous, because the launchpad configuration below must be complete before the shell loads.
+        var status = 0;
+        var access = {};
+        try {
+          var request = new XMLHttpRequest();
+          request.open("GET", "odata/v4/access/access()", false);
+          request.send();
+          status = request.status;
+          access = status === 200 ? JSON.parse(request.responseText) : {};
+        } catch (e) {
+          status = 0;
+        }
+        if (status === 401) {
+          location.replace("signin.html");
+          return;
+        }
+        var planner = !!access.planner;
+        // SEC-06: the Pledge Board is for known donor organisations (Donor role) only
+        var donor = !!access.donor;
+        apps = apps.filter(function (app) {
+          if (app.id === "command" || app.id === "camps") {
+            return planner;
+          }
+          return app.id === "pledge" ? donor : true;
+        });
+
+        // The home page is ReliefGrid's own; the launchpad shell loads only when an application is opened.
+        var isHome = function (hash) { return !hash || hash === "#" || /^#Shell-home\b/.test(hash); };
+        var home = isHome(location.hash);
+        // Moving between the home page and an application reloads, so each starts cleanly.
+        window.addEventListener("hashchange", function () {
+          if (isHome(location.hash) !== home) location.reload();
+        });
+
+        if (home) {
+          var esc = function (s) {
+            return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+          };
+          document.addEventListener("DOMContentLoaded", function () {
+            document.body.className = "rg-home";
+            var cards = apps.map(function (app) {
+              return '<li><a class="rg-card" style="--accent:var(--rg-c' + app.accent + ');--accent-bg:var(--rg-c' + app.accent + '-bg)" href="#' +
+                esc(app.semanticObject + "-" + app.action) + '">' +
+                '<span class="rg-icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[app.icon] + "</svg></span>" +
+                "<h2>" + esc(app.title) + "</h2>" +
+                "<p>" + esc(app.description) + "</p>" +
+                '<span class="rg-meta"><span>' + esc(app.audience) + "</span><strong>Open</strong></span></a></li>";
+            }).join("");
+            var home = document.createElement("div");
+            home.style.display = "contents";
+            home.innerHTML =
+              '<header class="rg-top"><div class="rg-wrap">' +
+                '<a class="rg-brand" href="#"><svg width="36" height="36" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="var(--rg-brand)"/>' +
+                '<g fill="var(--rg-on-brand)"><rect x="10" y="10" width="6" height="6" rx="1.5"/><rect x="17" y="10" width="6" height="6" rx="1.5" opacity=".7"/><rect x="24" y="10" width="6" height="6" rx="1.5" opacity=".45"/>' +
+                '<rect x="10" y="17" width="6" height="6" rx="1.5" opacity=".7"/><rect x="17" y="17" width="6" height="6" rx="1.5"/><rect x="24" y="17" width="6" height="6" rx="1.5" opacity=".7"/>' +
+                '<rect x="10" y="24" width="6" height="6" rx="1.5" opacity=".45"/><rect x="17" y="24" width="6" height="6" rx="1.5" opacity=".7"/><rect x="24" y="24" width="6" height="6" rx="1.5"/></g></svg>' +
+                "<b>ReliefGrid</b></a>" +
+                '<span class="rg-chip">' + (planner && donor ? "Signed in with planning and donor access" : planner ? "Signed in with planning access" : donor ? "Signed in with donor access" : "Signed in") + "</span>" +
+              "</div></header>" +
+              '<main class="rg-wrap">' +
+                '<section class="rg-hero"><h1>Relief operations</h1>' +
+                "<p>Measure what each relief camp has against what its people need, decide what to request, and follow every pledge until it is delivered.</p></section>" +
+                '<ul class="rg-grid" aria-label="Applications">' + cards + "</ul>" +
+              "</main>" +
+              '<footer class="rg-foot"><div class="rg-wrap"><span>Requirements follow the Sphere Handbook 2018 unless a local decision says otherwise.</span>' +
+              "<span>Every request is checked on the server. You only see the applications your role allows.</span></div></footer>";
+            document.body.insertBefore(home, document.body.firstChild);
+          });
+          return;
+        }
+
+        // ---- An application was opened: start the launchpad shell around it ----
+        // The sandbox turns each entry into a target mapping for its intent.
+        var applications = {};
+        apps.forEach(function (app) {
+          applications[app.semanticObject + "-" + app.action] = {
+            title: app.title,
+            description: app.subtitle,
+            additionalInformation: "SAPUI5.Component=" + app.component,
+            applicationType: "URL",
+            url: "./" + app.id + "/webapp"
+          };
+        });
+
+        window["sap-ushell-config"] = {
+          defaultRenderer: "fiori2",
+          renderers: {
+            fiori2: {
+              componentData: {
+                config: {
+                  enableSearch: false,
+                  enablePersonalization: false,
+                  rootIntent: "Shell-home"
+                }
+              }
+            }
+          },
+          applications: applications
+        };
+
+        var load = function (src, attributes) {
+          var s = document.createElement("script");
+          s.src = src;
+          s.async = false; // keep the order: sandbox, UI5 core, then the start script
+          Object.keys(attributes || {}).forEach(function (k) { s.setAttribute(k, attributes[k]); });
+          document.head.appendChild(s);
+          return s;
+        };
+        load("https://ui5.sap.com/1.148.12/test-resources/sap/ushell/bootstrap/sandbox.js");
+        var core = load("https://ui5.sap.com/1.148.12/resources/sap-ui-core.js", {
+          id: "sap-ui-bootstrap",
+          "data-sap-ui-libs": "sap.m, sap.ushell, sap.fe.templates",
+          "data-sap-ui-theme": "sap_horizon",
+          "data-sap-ui-compat-version": "edge",
+          "data-sap-ui-async": "true",
+          "data-sap-ui-frame-options": "allow",
+          "data-sap-ui-flexibility-services": '[{"connector": "LocalStorageConnector"}]',
+          "data-sap-ui-resource-roots": JSON.stringify({
+            "reliefgrid.command": "./command/webapp",
+            "reliefgrid.camps": "./camps/webapp",
+            "reliefgrid.pledge": "./pledge/webapp",
+            "reliefgrid.methodology": "./methodology/webapp"
+          })
+        });
+        core.addEventListener("load", function () {
+          sap.ui.require(["sap/ui/core/Core"], function (Core) {
+            Core.ready(function () {
+              sap.ushell.Container.createRendererInternal("fiori2", true).then(function (renderer) {
+                renderer.placeAt("canvas");
+              });
+            });
+          });
+        });
+        document.addEventListener("DOMContentLoaded", function () { document.body.className = "sapUiBody"; });
+      })();
+    </script>
+  </head>
+  <body id="content">
+    <div id="canvas"></div>
+  </body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in to ReliefGrid</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f5f6f7;
+        --bg-accent: #e8f1fb;
+        --card: #ffffff;
+        --text: #1d2d3e;
+        --muted: #556b82;
+        --line: #d9dee3;
+        --brand: #0a6ed1;
+        --brand-strong: #0854a0;
+        --on-brand: #ffffff;
+        --warn-bg: #fff8d6;
+        --warn-line: #e9730c;
+        --focus: #0070f2;
+        --shadow: 0 1px 2px rgba(29, 45, 62, 0.06), 0 8px 24px rgba(29, 45, 62, 0.08);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #12171c;
+          --bg-accent: #16222e;
+          --card: #1d232a;
+          --text: #eaecee;
+          --muted: #a9b4be;
+          --line: #354a5f;
+          --brand: #4db1ff;
+          --brand-strong: #7cc4ff;
+          --on-brand: #0b1a28;
+          --warn-bg: #2b2414;
+          --warn-line: #f0a14a;
+          --focus: #4db1ff;
+          --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: "72", "72full", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--text);
+        background: radial-gradient(1200px 600px at 50% -10%, var(--bg-accent), var(--bg) 70%) fixed, var(--bg);
+        display: flex;
+        flex-direction: column;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+      }
+      .card {
+        width: 100%;
+        max-width: 28rem;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        box-shadow: var(--shadow);
+        padding: 2rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.75rem;
+      }
+      .brand svg { flex: none; }
+      .brand-name { font-size: 1.125rem; font-weight: 700; letter-spacing: 0.01em; }
+      .brand-tag { font-size: 0.8125rem; color: var(--muted); }
+      h1 { font-size: 1.5rem; line-height: 1.25; font-weight: 700; margin: 0 0 0.5rem; }
+      .lead { margin: 0 0 1.5rem; color: var(--muted); }
+      .notice {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        background: var(--warn-bg);
+        border-left: 4px solid var(--warn-line);
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        margin: 0 0 1.5rem;
+        font-size: 0.9375rem;
+      }
+      .notice svg { flex: none; margin-top: 0.15rem; }
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 2.75rem;
+        padding: 0.625rem 1rem;
+        border-radius: 0.5rem;
+        background: var(--brand);
+        color: var(--on-brand);
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: background-color 0.15s ease;
+      }
+      .button:hover { background: var(--brand-strong); }
+      .button:focus-visible, a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+      h2 {
+        font-size: 0.8125rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin: 1.75rem 0 0.75rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--line);
+      }
+      ol { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 0.75rem; }
+      ol li { counter-increment: step; display: grid; grid-template-columns: 1.75rem 1fr; gap: 0.5rem; align-items: start; font-size: 0.9375rem; }
+      ol li::before {
+        content: counter(step);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.8125rem;
+        font-weight: 700;
+      }
+      footer { text-align: center; color: var(--muted); font-size: 0.8125rem; padding: 0 1rem 1.5rem; }
+      @media (max-width: 30rem) {
+        .card { padding: 1.5rem 1.25rem; border-radius: 0.75rem; }
+        h1 { font-size: 1.375rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="card" aria-labelledby="title">
+        <div class="brand">
+          <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+            <rect width="40" height="40" rx="10" fill="var(--brand)" />
+            <g fill="var(--on-brand)">
+              <rect x="10" y="10" width="6" height="6" rx="1.5" />
+              <rect x="17" y="10" width="6" height="6" rx="1.5" opacity="0.7" />
+              <rect x="24" y="10" width="6" height="6" rx="1.5" opacity="0.45" />
+              <rect x="10" y="17" width="6" height="6" rx="1.5" opacity="0.7" />
+              <rect x="17" y="17" width="6" height="6" rx="1.5" />
+              <rect x="24" y="17" width="6" height="6" rx="1.5" opacity="0.7" />
+              <rect x="10" y="24" width="6" height="6" rx="1.5" opacity="0.45" />
+              <rect x="17" y="24" width="6" height="6" rx="1.5" opacity="0.7" />
+              <rect x="24" y="24" width="6" height="6" rx="1.5" />
+            </g>
+          </svg>
+          <div>
+            <div class="brand-name">ReliefGrid</div>
+            <div class="brand-tag">Relief camp needs, measured against Sphere standards</div>
+          </div>
+        </div>
+
+        <h1 id="title">Sign in to continue</h1>
+        <p class="lead">ReliefGrid could not confirm who you are, so no applications were opened.</p>
+
+        <div class="notice" role="status">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="var(--warn-line)" d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z" /></svg>
+          <span>The sign-in was cancelled, or the user name or password was not accepted.</span>
+        </div>
+
+        <a class="button" href="index.html">Sign in again</a>
+
+        <h2>If you are not asked for your details</h2>
+        <ol>
+          <li><span>Your browser remembers the failed attempt. Close all its windows, or open a new private window.</span></li>
+          <li><span>Open ReliefGrid again and enter the user name and password your administrator gave you.</span></li>
+          <li><span>Still refused? Ask your administrator to check that your account has a ReliefGrid role.</span></li>
+        </ol>
+      </section>
+    </main>
+    <footer>Every request is checked on the server. You only see the applications your role allows.</footer>
+  </body>
+</html>

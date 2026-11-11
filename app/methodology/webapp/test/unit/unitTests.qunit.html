@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Methodology and References: unit tests</title>
+    <link rel="stylesheet" href="https://ui5.sap.com/1.148.12/resources/sap/ui/thirdparty/qunit-2.css" />
+    <script
+      id="sap-ui-bootstrap"
+      src="https://ui5.sap.com/1.148.12/resources/sap-ui-core.js"
+      data-sap-ui-resource-roots='{"reliefgrid.methodology": "../../", "unit": "./"}'
+      data-sap-ui-language="en"
+      data-sap-ui-async="true"
+    ></script>
+    <script>
+      sap.ui.require(["sap/ui/thirdparty/qunit-2"], function () {
+        QUnit.config.autostart = false;
+        QUnit.config.reorder = false;
+        QUnit.done(function (details) {
+          window.qunitResult = details;
+        });
+        sap.ui.require(["unit/formatter.test"], function () {
+          QUnit.start();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+  </body>
+</html>

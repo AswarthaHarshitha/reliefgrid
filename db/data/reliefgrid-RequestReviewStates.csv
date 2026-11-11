@@ -1,0 +1,5 @@
+code;name;descr;criticality
+PENDING;Review needed;The indicator's applicability changed and a coordinator must review this request;2
+KEPT;Kept after review;Reviewed and kept as it is;0
+CANCELLED;Cancelled after review;Reviewed and cancelled (it had no pledges);0
+REMAINDER_CANCELLED;Unpledged remainder cancelled;Reviewed: the unpledged quantity was cancelled and pledges were kept;0

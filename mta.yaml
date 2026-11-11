@@ -1,0 +1,99 @@
+_schema-version: 3.3.0
+ID: reliefgrid
+version: 1.0.0
+description: "Relief camp operations against the Sphere humanitarian minimum standards: gap analysis, supply requests and donor pledges on SAP CAP and SAP Fiori."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+        # the service also serves the Fiori apps and the launchpad
+        - cp -r app gen/srv/
+        # SEC-07: the apps' QUnit test pages never ship
+        - find gen/srv/app -path '*/webapp/test' -type d -prune -exec rm -rf {} +
+modules:
+  - name: reliefgrid-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: reliefgrid-auth
+      - name: reliefgrid-db
+
+  - name: reliefgrid-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: reliefgrid-db
+  - name: reliefgrid
+    type: approuter.nodejs
+    path: approuter
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: reliefgrid-auth
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
+resources:
+  - name: reliefgrid-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: reliefgrid-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+        role-collections:
+          - name: 'Coordinator (reliefgrid ${org}-${space})'
+            description: 'Camp coordinators and relief control room staff'
+            role-template-references:
+              - '$XSAPPNAME.Coordinator'
+          # Assigned to nobody on deployment; a subaccount administrator assigns it, together with Coordinator.
+          - name: 'Planning Administrator (reliefgrid ${org}-${space})'
+            description: 'Changes the planning settings (thresholds and replenishment target)'
+            role-template-references:
+              - '$XSAPPNAME.Administrator'
+          # SEC-06: known donor organisations only; assigned per donor account by a subaccount administrator.
+          - name: 'Donor (reliefgrid ${org}-${space})'
+            description: 'Known donor organisations: see open camp needs and pledge supplies'
+            role-template-references:
+              - '$XSAPPNAME.Donor'
+    requires:
+      - name: app-api
+  - name: reliefgrid-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared

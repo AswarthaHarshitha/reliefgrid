@@ -1,0 +1,367 @@
+{
+  "reviewed": "2026-11-02",
+  "source": {
+    "title": "The Sphere Handbook: Humanitarian Charter and Minimum Standards in Humanitarian Response",
+    "edition": "Fourth edition, 2018",
+    "publisher": "Sphere Association, Geneva",
+    "isbn": "978-1-908176-707 (PDF)",
+    "copyUrl": "https://www.sphereindia.org.in/sites/default/files/2022-07/Sphere-Handbook-2018-EN.pdf",
+    "copyPages": "458",
+    "sha256": "eeb7e680c296e15389ca8a1e5882a3796f23cbba31cfb21dd4661332c4c8cf63",
+    "pageNumbers": "Page numbers are the handbook's printed page numbers in this copy.",
+    "editionStatus": "According to Sphere's current published information, the 2018 edition remains the official reference and the fifth edition is expected in Q4 2028. Checked against the official pages listed above by the ReliefGrid domain owner on 2 November 2026.",
+    "officialEditionsUrl": "https://spherestandards.org/handbook/handbook-editions/",
+    "officialRevisionFaqUrl": "https://spherestandards.org/handbook-revision-2026-2028/faqs/",
+    "verificationNote": "The quotations on this page were checked against the text of the copy above. The SHA-256 identifies that local copy only. It has not been compared with the PDF published by the Sphere Association, so it does not show that the two files are identical, and no figure here has been confirmed by Sphere.",
+    "copyright": "Quotations © Sphere Association, 2018, reproduced briefly for training and programme use as the handbook permits."
+  },
+  "indicators": [
+    {
+      "code": "WATER",
+      "name": "Water",
+      "sector": "Water supply, sanitation and hygiene promotion (WASH)",
+      "reference": {
+        "value": "15",
+        "unit": "litres per person per day (minimum)"
+      },
+      "chapter": "Water supply, sanitation and hygiene promotion",
+      "standard": "Water supply standard 2.1: Access and water quantity",
+      "element": "Key indicator; guidance note on needs",
+      "pages": "106 (key indicator), 107 (guidance)",
+      "quote": "A minimum of 15 litres per person per day is established practice. It is never a “maximum” and may not suit all contexts or phases of a response.",
+      "quotePage": "107",
+      "summary": "Sphere sets 15 litres per person per day as a minimum for drinking, cooking and personal hygiene, to be set according to context and the phase of the response.",
+      "qualifications": [
+        "A minimum, never a maximum or a universal target.",
+        "In the acute phase of a drought, 7.5 litres per person per day may be appropriate for a short time (p. 107).",
+        "In an urban middle-income context, 50 litres per person per day may be the minimum acceptable amount (p. 107).",
+        "15 litres is not appropriate where people may be displaced for many years (p. 107)."
+      ],
+      "verification": "conditional",
+      "valueType": "sphere",
+      "calculation": {
+        "value": 15,
+        "unit": "litres",
+        "per": "per person per day"
+      },
+      "use": "ReliefGrid applies 15 litres per person per day to every camp. A camp-specific figure cannot yet be recorded."
+    },
+    {
+      "code": "FOOD",
+      "name": "Food rations",
+      "sector": "Food security and nutrition",
+      "reference": {
+        "value": "2,100",
+        "unit": "kcal per person per day (planning figure)"
+      },
+      "chapter": "Food security and nutrition",
+      "standard": "Food assistance standard 6.1: General nutrition requirements",
+      "element": "Key indicator; guidance note",
+      "pages": "198 (key indicator), 199 (guidance)",
+      "quote": "2,100 kCal per person per day with 10–12 per cent of total energy provided by protein and 17 per cent provided by fat",
+      "quotePage": "199",
+      "summary": "Sphere uses 2,100 kcal per person per day, with recommended micronutrient intake, as a planning estimate for general rations, to be adjusted to the population and context.",
+      "qualifications": [
+        "A planning figure for general rations, adjusted to context (p. 199).",
+        "Energy alone does not show that protein, fat or micronutrient needs are met.",
+        "Sphere does not define a generic “ration”. Counting ration packs is not a Sphere measurement."
+      ],
+      "verification": "conditional",
+      "valueType": "planning",
+      "calculation": {
+        "value": 1,
+        "unit": "rations",
+        "per": "per person per day",
+        "text": "2,100 kcal per person per day, divided by the kcal of one ration pack (1 pack per person per day at the assumed 2,100 kcal per pack)"
+      },
+      "use": "Food energy planning. Each camp records the energy of its ration pack in kcal. The daily requirement is people × 2,100 kcal ÷ kcal per pack, so days of cover = (packs × kcal per pack) ÷ (people × 2,100). Until a camp records its pack, ReliefGrid assumes 2,100 kcal per pack and labels the figure as assumed; that assumption is ReliefGrid's, not Sphere's. Energy alone does not show that protein, fat or micronutrient needs are met, and ReliefGrid never says it does. A local target, where approved, replaces the figure in packs per person per day."
+    },
+    {
+      "code": "SOAP",
+      "name": "Bathing soap",
+      "sector": "Water supply, sanitation and hygiene promotion (WASH)",
+      "reference": {
+        "value": "250",
+        "unit": "grams per person per month"
+      },
+      "chapter": "Water supply, sanitation and hygiene promotion",
+      "standard": "Hygiene promotion standard 1.2: Identification, access to and use of hygiene items",
+      "element": "Key indicator",
+      "pages": "100",
+      "quote": "250 grams of soap for bathing per person per month",
+      "quotePage": "100",
+      "summary": "Each person has access to 250 g of bathing soap per month.",
+      "qualifications": [
+        "The Sphere figure is monthly.",
+        "Women and girls need an extra 250 g of soap per month for menstrual hygiene (p. 104)."
+      ],
+      "verification": "verified",
+      "valueType": "converted",
+      "calculation": {
+        "value": 8.333333,
+        "unit": "grams",
+        "per": "per person per day"
+      },
+      "use": "To work out days of supply, ReliefGrid divides the monthly figure by 30 days. The daily value is a conversion, not a Sphere figure."
+    },
+    {
+      "code": "LAUNDRY",
+      "name": "Laundry soap",
+      "sector": "Water supply, sanitation and hygiene promotion (WASH)",
+      "reference": {
+        "value": "200",
+        "unit": "grams per person per month"
+      },
+      "chapter": "Water supply, sanitation and hygiene promotion",
+      "standard": "Hygiene promotion standard 1.2: Identification, access to and use of hygiene items",
+      "element": "Key indicator",
+      "pages": "100",
+      "quote": "200 grams of soap for laundry per person per month",
+      "quotePage": "100",
+      "summary": "Each person has access to 200 g of laundry soap per month.",
+      "qualifications": [
+        "The Sphere figure is monthly."
+      ],
+      "verification": "verified",
+      "valueType": "converted",
+      "calculation": {
+        "value": 6.666667,
+        "unit": "grams",
+        "per": "per person per day"
+      },
+      "use": "To work out days of supply, ReliefGrid divides the monthly figure by 30 days. The daily value is a conversion, not a Sphere figure."
+    },
+    {
+      "code": "SHELTER",
+      "name": "Living space",
+      "sector": "Shelter and settlement",
+      "reference": {
+        "value": "3.5",
+        "unit": "m² of living space per person (minimum)"
+      },
+      "chapter": "Shelter and settlement",
+      "standard": "Shelter and settlement standard 3: Living space",
+      "element": "Key indicator; guidance note",
+      "pages": "254 (key indicator), 255 (guidance)",
+      "quote": "Minimum 3.5 square metres of living space per person, excluding cooking space, bathing area and sanitation facility",
+      "quotePage": "254",
+      "summary": "At least 3.5 m² of living space per person, not counting space for cooking, bathing or sanitation.",
+      "qualifications": [
+        "Excludes cooking space, bathing area and sanitation facility.",
+        "4.5–5.5 m² per person in cold climates or urban settings where internal cooking space and bathing or sanitation facilities are included (p. 254).",
+        "The minimum should reflect cultural and social norms, the context and the phase of the response (p. 255)."
+      ],
+      "verification": "conditional",
+      "valueType": "sphere",
+      "calculation": {
+        "value": 3.5,
+        "unit": "m²",
+        "per": "per person"
+      },
+      "use": "ReliefGrid compares the recorded covered living space with 3.5 m² per person in every camp. It does not check what the recorded space includes."
+    },
+    {
+      "code": "TOILET",
+      "name": "Toilets",
+      "sector": "Water supply, sanitation and hygiene promotion (WASH)",
+      "reference": {
+        "value": "1 per 20",
+        "unit": "people per shared toilet (medium term)"
+      },
+      "chapter": "Water supply, sanitation and hygiene promotion",
+      "standard": "Excreta management standard 3.2: Access to and use of toilets",
+      "element": "Key indicator; guidance notes",
+      "pages": "116 (key indicator), 117–118 (guidance)",
+      "quote": "A medium-term minimum ratio is 1 per 20 people, with a ratio of 3:1 for female to male toilets.",
+      "quotePage": "118",
+      "summary": "Shared toilets at a minimum of one per 20 people, no more than 50 metres from dwellings.",
+      "qualifications": [
+        "In the first phases of a rapid-onset crisis, communal toilets at a minimum of 1 per 50 people, improved as soon as possible (p. 118).",
+        "Medium term: 1 per 20 people, with 3 female toilets for every male toilet (p. 118).",
+        "Accessible toilets at a minimum of 1 per 250 people (p. 117).",
+        "Maximum 50 metres between dwelling and shared toilet (p. 116)."
+      ],
+      "verification": "conditional",
+      "valueType": "sphere",
+      "calculation": {
+        "value": 0.05,
+        "unit": "toilets",
+        "per": "per person (1 per 20)"
+      },
+      "use": "ReliefGrid applies 1 per 20 people (medium term) unless an approved response-phase decision puts the camp in the first phase of a rapid-onset crisis, where Sphere gives a minimum of 1 per 50, to be improved as soon as possible. A camp without a decision is in the medium term by default, and says so. Each count records the total toilets and, where checked, the functional ones; only functional toilets meet the requirement. Sex separation, lighting, distance and accessibility are not recorded."
+    },
+    {
+      "code": "TAP",
+      "name": "Water taps",
+      "sector": "Water supply, sanitation and hygiene promotion (WASH)",
+      "reference": {
+        "value": "250",
+        "unit": "people per tap, at 7.5 litres per minute"
+      },
+      "chapter": "Water supply, sanitation and hygiene promotion",
+      "standard": "Water supply standard 2.1: Access and water quantity",
+      "element": "Key indicator",
+      "pages": "106",
+      "quote": "250 people per tap (based on a flow rate of 7.5 litres/minute)",
+      "quotePage": "106",
+      "summary": "At most 250 people per tap, assuming each tap delivers 7.5 litres per minute.",
+      "qualifications": [
+        "Only holds at a flow rate of 7.5 litres per minute. A tap with a lower flow serves fewer people.",
+        "Other water points have their own figures: 500 people per hand pump (17 L/min) and 400 per open hand well (12.5 L/min) (p. 106).",
+        "Nearest water point under 500 metres from any household, and queuing under 30 minutes (p. 106)."
+      ],
+      "verification": "conditional",
+      "valueType": "sphere",
+      "calculation": {
+        "value": 0.004,
+        "unit": "taps",
+        "per": "per person (1 per 250)"
+      },
+      "use": "Each count records the total taps and, where checked, the functional ones; only functional taps meet the requirement. Every functional tap is counted at Sphere's assumption of 7.5 litres per minute. Flow is not measured, so a tap with a lower flow serves fewer people than ReliefGrid assumes."
+    },
+    {
+      "code": "CONTAINER",
+      "name": "Water containers",
+      "sector": "Water supply, sanitation and hygiene promotion (WASH)",
+      "reference": {
+        "value": "2",
+        "unit": "water containers per household (10–20 litres)"
+      },
+      "chapter": "Water supply, sanitation and hygiene promotion",
+      "standard": "Hygiene promotion standard 1.2: Identification, access to and use of hygiene items",
+      "element": "Key indicator",
+      "pages": "100",
+      "quote": "two water containers per household (10–20 litres; one for collection, one for storage)",
+      "quotePage": "100",
+      "summary": "Each household has two water containers of 10–20 litres, one for collecting water and one for storing it.",
+      "qualifications": [
+        "The Sphere figure is per household, not per person.",
+        "The indicator does not set a household size."
+      ],
+      "verification": "verified",
+      "valueType": "planning",
+      "calculation": {
+        "value": 2,
+        "unit": "containers",
+        "per": "per household"
+      },
+      "use": "ReliefGrid requires two containers per household. A household count recorded for the camp is used as it is. Where none was recorded, households are estimated from the headcount and the household size, rounded up, and are always labelled Estimated. The household size is a ReliefGrid planning assumption. An approved local target for a camp, which is per person, takes precedence."
+    },
+    {
+      "code": "NET",
+      "name": "Mosquito nets",
+      "sector": "Health",
+      "reference": {
+        "value": "No ratio given",
+        "unit": "nets “where needed”",
+        "text": "No ratio given; nets “where needed”"
+      },
+      "chapter": "Shelter and settlement; Water supply, sanitation and hygiene promotion",
+      "standard": "Shelter and settlement standard 4: Household items; Vector control standard 4.2",
+      "element": "Key indicator (household items); guidance note (vector control)",
+      "pages": "259 (household items), 125 (vector control guidance)",
+      "quote": "Long-lasting insecticide-treated nets where needed",
+      "quotePage": "259",
+      "summary": "Sphere includes long-lasting insecticide-treated nets among household items where they are needed, and names bed nets as individual protection against malaria. It gives no number of nets per person.",
+      "qualifications": [
+        "Sphere does not prescribe a ratio of nets to people.",
+        "Whether nets are needed depends on the context, such as malaria or other vector-borne disease risk, and on programme or local health policy."
+      ],
+      "verification": "notSphere",
+      "valueType": "none",
+      "calculation": {
+        "value": null,
+        "unit": "nets",
+        "per": "no requirement",
+        "text": "No requirement: applicability is decided per camp"
+      },
+      "use": "ReliefGrid applies no default number of nets. Each camp needs an approved applicability decision, proposed with a reason and approved by an Administrator other than the proposer. Until then nets show Applicability not decided. Not applicable needs a supporting source. Applicable alone sets no number: nets then show Requirement not established until an approved requirement exists (a later stage). Nets never produce a shortage or a supply request without one."
+    }
+  ],
+  "planningChoices": [
+    {
+      "choice": "Critical threshold for consumables",
+      "setting": "criticalDays",
+      "template": "Under {0} days of supply",
+      "value": "Under 2 days of supply",
+      "usedFor": "Critical status, Critical Gaps, Camps with Critical Gaps"
+    },
+    {
+      "choice": "Warning threshold for consumables",
+      "setting": "warningDays",
+      "template": "Under {0} days of supply",
+      "value": "Under 5 days of supply",
+      "usedFor": "Warning status"
+    },
+    {
+      "choice": "Critical threshold for infrastructure",
+      "setting": "criticalPercent",
+      "template": "Under {0} % of the reference requirement",
+      "value": "Under 50 % of the reference requirement",
+      "usedFor": "Critical status, Critical Gaps, Camps with Critical Gaps"
+    },
+    {
+      "choice": "Warning threshold for infrastructure",
+      "setting": "warningPercent",
+      "template": "Under {0} % of the reference requirement",
+      "value": "Under 90 % of the reference requirement",
+      "usedFor": "Warning status"
+    },
+    {
+      "choice": "Replenishment target",
+      "setting": "targetDays",
+      "template": "{0} days of supply for consumables; 100 % of the reference requirement for infrastructure",
+      "value": "7 days of supply for consumables; 100 % of the reference requirement for infrastructure",
+      "usedFor": "Shortfall and Raise Requests"
+    },
+    {
+      "choice": "Household size",
+      "value": "5 people",
+      "usedFor": "Estimating households where none were counted, for water containers",
+      "assumption": "householdSize",
+      "template": "{0} people"
+    },
+    {
+      "choice": "Ration pack energy",
+      "value": "2,100 kcal per pack until a camp records the energy of its own pack",
+      "usedFor": "Food days of supply (food energy planning)"
+    },
+    {
+      "choice": "Month length",
+      "value": "30 days",
+      "usedFor": "Daily soap figures"
+    },
+    {
+      "choice": "Applicability",
+      "value": "Eight indicators apply to every active camp unless an approved decision says otherwise. Mosquito nets apply only after an approved decision for the camp",
+      "usedFor": "All results"
+    },
+    {
+      "choice": "Applicable Indicators Met",
+      "value": "Share of a camp's assessed indicators that meet the reference requirement, each counted equally. Indicators that are not counted or not assessed are left out",
+      "usedFor": "Camp summary"
+    }
+  ],
+  "localTargets": [
+    "The reference figures above are the baseline for every camp. A camp can need a different requirement per person, for example in a hot season or where there is no other water source. A local target replaces the reference figure for one indicator in one camp only. The reference figure itself never changes, and no other camp is affected.",
+    "A local target is a requirement per person in the indicator's own unit, the same unit as the reference figure (per day for consumables). It can only replace a reference figure: an indicator without one, such as mosquito nets, cannot have a local target, because a local target never creates a requirement.",
+    "A Coordinator or an Administrator proposes a local target with a reason, a source and a review date. An Administrator who did not propose it approves it. It takes effect on approval or on a later date; until then the reference figure, or the earlier local target, still applies. It ends only through an approved replacement or an approved withdrawal.",
+    "Applicability is decided first. A local target is used only for an indicator that applies, in a camp with people, once the stock has been counted. It never makes an indicator apply and never turns an uncounted line into a result. When a local target changes the requirement, open requests for that indicator are flagged for a coordinator to review. Nothing is cancelled, and pledges and deliveries stay as they are.",
+    "Every assessment records the figure it used, the reference figure at the time, and the local target decision with its identifier, version, effective date and source. A later local target never changes an earlier assessment: it still shows the target that applied when it was calculated.",
+    "Each local target has a review date. An Administrator records the review: confirmed until a new review date, or a change proposed for approval. A review that is due or overdue is shown in the Command Center, but the local target stays in force: nothing is reclassified, replaced or cancelled by itself, because only an approved decision changes what is in force. Applicability decisions are reviewed the same way."
+  ],
+  "interpretation": [
+    "Every figure is a minimum or planning reference. Its meaning depends on the phase of the response, the climate and setting, and the needs of women, children, older people and people with disabilities.",
+    "A met indicator shows that recorded stock reaches ReliefGrid's reference requirement. It does not show that the supplies are of adequate quality, accessible or actually used.",
+    "Toilets and taps are counted as recorded. Whether they work, are sex-separated, lit or accessible is not tracked.",
+    "Each indicator has one state, decided in this order. Not assessed: no people recorded, or no planning settings. Applicability not decided: the indicator needs an approved decision for the camp (mosquito nets) and has none. Not applicable: an approved decision, with a reason and a source, says it does not apply. Requirement not established: it applies but ReliefGrid has no approved requirement for it. Not counted: the stock has never been counted. Only after these come Critical, Needs attention and Met.",
+    "None of the first five states is treated as met or as a shortage. They are left out of Applicable Indicators Met, the critical gaps and supply requests. A count of 0 is a real count and shows as critical.",
+    "Applicability decisions are proposed with a reason (and a source when an indicator does not apply), approved by an Administrator other than the proposer, reviewed by a set date, and never backdated. A decision with a later effective date is Scheduled; the decision before it stays in force until then. An overdue review is shown but changes nothing. Requests for an indicator that stops applying are flagged for review and never cancelled automatically.",
+    "Water containers are worked out per household. A count of households is never replaced by an estimate, and an estimate is never shown as a count. Changing the household size re-estimates only camps without a recorded count. Every assessment keeps the households it used and the household size behind an estimate, so a later change never alters an earlier result.",
+    "Food rations are counted against food energy: each camp records the kcal of its ration pack, and until it does, 2,100 kcal per pack is assumed and labelled as assumed. Recording or correcting the kcal of a pack re-assesses the camp and flags each outstanding food request whose requirement changes, with the figures before and after; quantities, pledges and deliveries are never changed. Every assessment keeps the kcal it used and whether it was recorded or assumed.",
+    "A household-size change is proposed by one Administrator with a reason and takes effect only when another Administrator approves it; the proposer can withdraw it, and another Administrator can reject it with a reason. Every change records who proposed it, who approved it, when, why, and the size before and after.",
+    "When a recorded household count or an approved household-size change alters the container requirement of a camp, each outstanding container request for that camp is flagged for review, with what changed and the requirement before and after. Its quantity, pledges and deliveries are never changed, and it is not offered to donors until reviewed. A request is not flagged when the requirement stays the same, for example when a local target is in force or the indicator is decided not applicable. A headcount change alone does not flag requests.",
+    "The response phase is decided per camp, with a reason, an effective date and an Administrator who did not propose it. It changes only the toilet figure: 1 per 50 people in the first phase of a rapid-onset crisis, 1 per 20 in the medium term. These are Sphere figures for those contexts, not universal requirements. An approved local target for toilets takes precedence. Every assessment keeps the phase it used and whether it was decided or the default.",
+    "For toilets and taps, a total count is never treated as a functional count. Without a confirmed functional count, the line shows Functionality not confirmed: it is neither met nor a gap, and raises no request. The one exception is a certain crisis: when even the total is below the critical threshold, functional units can only be fewer, so the line is Critical (functionality not confirmed). Counts recorded before functional counting are total units with functionality not confirmed."
+  ]
+}

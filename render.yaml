@@ -1,0 +1,29 @@
+# Render blueprint for the self-hosted ReliefGrid container (Docker, SQLite on a persistent disk).
+# Secrets are never stored here: CDS_CONFIG (the user accounts) is entered in the Render dashboard
+# as a secret environment variable. See docs/DEPLOYMENT.md before the first deployment.
+services:
+  - type: web
+    name: reliefgrid
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    # a persistent disk needs a paid instance; the database lives on it and survives deployments
+    plan: starter
+    healthCheckPath: /ready
+    autoDeploy: false
+    disk:
+      name: reliefgrid-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CDS_ENV
+        value: selfhost
+      - key: HOST
+        value: 0.0.0.0
+      # the calendar day of the operation (ARCH-08): set the IANA zone where the camps are, e.g. Asia/Kolkata
+      - key: RELIEFGRID_TIME_ZONE
+        value: UTC
+      # user accounts and roles (Coordinator, Administrator, Donor) as JSON; set in the dashboard only
+      - key: CDS_CONFIG
+        sync: false

@@ -1,0 +1,18 @@
+node_modules/
+gen/
+*.sqlite
+*.sqlite-*
+approuter/node_modules/
+approuter/default-env.json
+mta_archives/
+*.mtar
+.DS_Store
+
+# local environment and secrets
+.env
+.env.*
+default-env.json
+
+# tool output
+coverage/
+*.log

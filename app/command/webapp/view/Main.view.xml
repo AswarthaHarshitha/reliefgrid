@@ -1,0 +1,324 @@
+<mvc:View
+  controllerName="reliefgrid.command.controller.Main"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  xmlns:f="sap.f"
+  xmlns:mc="sap.suite.ui.microchart"
+  xmlns="sap.m"
+  core:require="{formatter: 'reliefgrid/command/model/formatter'}"
+  displayBlock="true"
+  height="100%">
+
+  <f:DynamicPage id="page" class="rgPage" toggleHeaderOnTitleClick="true" busy="{view>/busy}" busyIndicatorDelay="0">
+    <f:title>
+      <f:DynamicPageTitle>
+        <f:heading>
+          <HBox alignItems="Center" class="rgHeading">
+            <core:Icon src="sap-icon://heatmap-chart" size="1.5rem" color="Default" class="sapUiSmallMarginEnd rgHeadingIcon" decorative="true"/>
+            <Title text="{i18n>title}" level="H1" wrapping="true"/>
+          </HBox>
+        </f:heading>
+        <f:expandedContent>
+          <Text text="{view>/subtitle}" class="rgSubtitle"/>
+        </f:expandedContent>
+        <f:snappedContent>
+          <Text text="{view>/snapped}" class="rgSubtitle"/>
+        </f:snappedContent>
+        <f:actions>
+          <Button id="registerCamp" text="{i18n>registerCamp}" icon="sap-icon://add" type="Emphasized" press=".onManageCamps"/>
+          <Button id="refresh" icon="sap-icon://refresh" tooltip="{i18n>refresh}" type="Transparent" press=".onRefresh"/>
+        </f:actions>
+      </f:DynamicPageTitle>
+    </f:title>
+
+    <f:header>
+      <f:DynamicPageHeader pinnable="true">
+        <FlexBox id="kpis" wrap="Wrap" class="rgKpis" renderType="Bare">
+          <GenericTile id="kpiCamps" class="rgKpi" header="{i18n>kpiCamps}" subheader="{view>/kpiText/camps}" tooltip="{i18n>kpiCampsRule}" frameType="OneByOne" press=".onKpiPress">
+            <TileContent>
+              <NumericContent value="{path: 'view>/kpi/activeCamps', formatter: 'formatter.compact'}" icon="sap-icon://building" withMargin="false" truncateValueTo="7" valueColor="Neutral"/>
+            </TileContent>
+          </GenericTile>
+          <GenericTile id="kpiPeople" class="rgKpi" header="{i18n>kpiPeople}" subheader="{view>/kpiText/people}" tooltip="{i18n>kpiPeopleRule}" frameType="OneByOne" press=".onKpiPress">
+            <TileContent>
+              <NumericContent value="{path: 'view>/kpi/people', formatter: 'formatter.compact'}" icon="sap-icon://family-care" withMargin="false" truncateValueTo="7" valueColor="Neutral"/>
+            </TileContent>
+          </GenericTile>
+          <GenericTile id="kpiCrisis" class="rgKpi" header="{i18n>kpiCrisis}" subheader="{view>/kpiText/crisis}" tooltip="{view>/kpiRule/crisis}" frameType="OneByOne" press=".onKpiPress">
+            <TileContent>
+              <NumericContent value="{path: 'view>/kpi/campsInCrisis', formatter: 'formatter.compact'}" icon="sap-icon://alert" withMargin="false" truncateValueTo="7"
+                valueColor="{= ${view>/kpi/campsInCrisis} > 0 ? 'Error' : 'Good' }"/>
+            </TileContent>
+          </GenericTile>
+          <GenericTile id="kpiCritical" class="rgKpi" header="{i18n>kpiCritical}" subheader="{view>/kpiText/critical}" tooltip="{view>/kpiRule/critical}" frameType="OneByOne" press=".onKpiPress">
+            <customData><core:CustomData key="tab" value="gaps"/></customData>
+            <TileContent>
+              <NumericContent value="{path: 'view>/kpi/criticalGaps', formatter: 'formatter.compact'}" icon="sap-icon://quality-issue" withMargin="false" truncateValueTo="7"
+                valueColor="{= ${view>/kpi/criticalGaps} > 0 ? 'Error' : 'Good' }"/>
+            </TileContent>
+          </GenericTile>
+          <GenericTile id="kpiAwaiting" class="rgKpi" header="{i18n>kpiAwaiting}" subheader="{i18n>kpiAwaitingSub}" tooltip="{i18n>kpiAwaitingRule}" frameType="OneByOne" press=".onKpiPress">
+            <TileContent>
+              <NumericContent value="{path: 'view>/kpi/requestsAwaitingPledge', formatter: 'formatter.compact'}" icon="sap-icon://request" withMargin="false" truncateValueTo="7"
+                valueColor="{= ${view>/kpi/requestsAwaitingPledge} > 0 ? 'Critical' : 'Neutral' }"/>
+            </TileContent>
+          </GenericTile>
+          <GenericTile id="kpiIncoming" class="rgKpi" header="{i18n>kpiIncoming}" subheader="{i18n>kpiIncomingSub}" tooltip="{i18n>kpiIncomingRule}" frameType="OneByOne" press=".onKpiPress">
+            <customData><core:CustomData key="tab" value="transit"/></customData>
+            <TileContent>
+              <NumericContent value="{path: 'view>/kpi/requestsWithIncomingPledges', formatter: 'formatter.compact'}" icon="sap-icon://inbox" withMargin="false" truncateValueTo="7" valueColor="Neutral"/>
+            </TileContent>
+          </GenericTile>
+          <GenericTile id="kpiTransit" class="rgKpi" header="{i18n>kpiTransit}" subheader="{i18n>kpiTransitSub}" tooltip="{i18n>kpiTransitRule}" frameType="OneByOne" press=".onKpiPress">
+            <customData><core:CustomData key="tab" value="transit"/></customData>
+            <TileContent>
+              <NumericContent value="{path: 'view>/kpi/pledgesInTransit', formatter: 'formatter.compact'}" icon="sap-icon://shipping-status" withMargin="false" truncateValueTo="7" valueColor="Neutral"/>
+            </TileContent>
+          </GenericTile>
+        </FlexBox>
+      </f:DynamicPageHeader>
+    </f:header>
+
+    <f:content>
+      <VBox renderType="Bare">
+      <IconTabBar id="tabs" headerMode="Inline" selectedKey="{view>/tab}" headerBackgroundDesign="Transparent" backgroundDesign="Transparent"
+        applyContentPadding="false" stretchContentHeight="false" class="rgTabs">
+        <items>
+          <IconTabFilter key="heatmap" icon="sap-icon://heatmap-chart" text="{i18n>tabHeatmap}" count="{= ${view>/camps}.length }" iconColor="Default">
+            <VBox class="rgCard" renderType="Bare">
+              <FlexBox wrap="Wrap" alignItems="Center" class="rgLegend" visible="{= ${view>/camps}.length > 0 }">
+                <ObjectStatus text="{view>/text/legendCritical}" state="Error" inverted="true" icon="sap-icon://error" class="sapUiSmallMarginEnd sapUiTinyMarginBottom"/>
+                <ObjectStatus text="{view>/text/legendWarning}" state="Warning" inverted="true" icon="sap-icon://alert" class="sapUiSmallMarginEnd sapUiTinyMarginBottom"/>
+                <ObjectStatus text="{i18n>legendAdequate}" state="Success" inverted="true" icon="sap-icon://sys-enter-2" class="sapUiSmallMarginEnd sapUiTinyMarginBottom"/>
+                <ObjectStatus text="{i18n>legendNotCounted}" state="None" inverted="true" icon="sap-icon://pending" class="sapUiSmallMarginEnd sapUiTinyMarginBottom"/>
+                <ObjectStatus text="{i18n>legendNotAssessed}" state="None" icon="sap-icon://status-inactive" class="sapUiSmallMarginEnd sapUiTinyMarginBottom"/>
+                <ObjectStatus text="{i18n>legendNotEstablished}" state="None" icon="sap-icon://question-mark" class="sapUiSmallMarginEnd sapUiTinyMarginBottom"/>
+                <ObjectStatus text="{i18n>legendLocalTarget}" state="None" icon="sap-icon://customize" class="sapUiSmallMarginEnd sapUiTinyMarginBottom"/>
+                <Text text="{i18n>legendHint}" class="rgHint sapUiTinyMarginBottom"/>
+              </FlexBox>
+              <Panel id="actNow" expandable="true" expanded="{= ${view>/actNow}.length > 0 }" visible="{= !!${view>/actNow} }" class="rgActNow sapUiSmallMarginBottom"
+                headerText="{= ${i18n>actNowTitle}.replace('{0}', ${view>/actNow}.length) }">
+                <List items="{path: 'view>/actNow', templateShareable: false}" growing="true" growingThreshold="8" noDataText="{i18n>actNowEmpty}">
+                  <CustomListItem type="Navigation" press=".onOpenActNow">
+                    <HBox alignItems="Center" class="sapUiTinyMarginTopBottom sapUiSmallMarginBeginEnd" renderType="Bare">
+                      <ObjectStatus icon="{view>icon}" state="{view>state}" text="{view>kindText}" class="sapUiSmallMarginEnd rgActKind"/>
+                      <VBox renderType="Bare">
+                        <Text text="{view>campName}" class="rgActCamp"/>
+                        <Text text="{view>text}"/>
+                      </VBox>
+                    </HBox>
+                  </CustomListItem>
+                </List>
+              </Panel>
+              <OverflowToolbar id="heatmapFilters" style="Clear" class="rgFilters">
+                <Label text="{i18n>filterRegion}" labelFor="filterRegion"/>
+                <Select id="filterRegion" selectedKey="{view>/filter/region}" change=".onFilter" items="{path: 'view>/filterValues/region', templateShareable: false}" width="12rem">
+                  <core:Item key="{view>key}" text="{view>text}"/>
+                </Select>
+                <Label text="{i18n>filterDistrict}" labelFor="filterDistrict"/>
+                <Select id="filterDistrict" selectedKey="{view>/filter/district}" change=".onFilter" items="{path: 'view>/filterValues/district', templateShareable: false}" width="12rem">
+                  <core:Item key="{view>key}" text="{view>text}"/>
+                </Select>
+                <Label text="{i18n>filterHazard}" labelFor="filterHazard"/>
+                <Select id="filterHazard" selectedKey="{view>/filter/hazard}" change=".onFilter" items="{path: 'view>/filterValues/hazard', templateShareable: false}" width="11rem">
+                  <core:Item key="{view>key}" text="{view>text}"/>
+                </Select>
+                <Label text="{i18n>filterSeverity}" labelFor="filterSeverity"/>
+                <Select id="filterSeverity" selectedKey="{view>/filter/severity}" change=".onFilter" width="12rem">
+                  <core:Item key="" text="{i18n>filterAll}"/>
+                  <core:Item key="critical" text="{i18n>filterCritical}"/>
+                  <core:Item key="attention" text="{i18n>filterAttention}"/>
+                  <core:Item key="notCounted" text="{i18n>filterNotCounted}"/>
+                  <core:Item key="met" text="{i18n>filterMet}"/>
+                  <core:Item key="notAssessed" text="{i18n>filterNotAssessed}"/>
+                </Select>
+                <ToolbarSpacer/>
+                <Button id="clearFilters" text="{i18n>filterClear}" type="Transparent" icon="sap-icon://clear-filter" press=".onClearFilters" enabled="{= !!${view>/filtered} }"/>
+              </OverflowToolbar>
+              <MessageStrip id="campsNotice" text="{view>/campsNotice}" type="Warning" showIcon="true" visible="{= !!${view>/campsNotice} }" class="sapUiTinyMarginBottom"/>
+              <Table id="heatmap" sticky="ColumnHeaders" popinLayout="GridSmall" class="rgHeatmap"
+                growing="true" growingThreshold="50" mode="None">
+                <noData>
+                  <IllustratedMessage illustrationType="sapIllus-NoEntries" title="{i18n>emptyCampsTitle}" description="{i18n>emptyCampsText}" enableVerticalResponsiveness="true">
+                    <additionalContent>
+                      <Button text="{i18n>registerCamp}" type="Emphasized" icon="sap-icon://add" press=".onManageCamps"/>
+                    </additionalContent>
+                  </IllustratedMessage>
+                </noData>
+              </Table>
+            </VBox>
+          </IconTabFilter>
+
+          <IconTabFilter key="gaps" icon="sap-icon://quality-issue" text="{i18n>tabGaps}" count="{view>/kpi/criticalGaps}" iconColor="Negative">
+            <VBox class="rgCard" renderType="Bare">
+              <Table id="gaps" sticky="ColumnHeaders" popinLayout="GridSmall"
+                items="{
+                  path: '/Stock',
+                  parameters: {
+                    $expand: 'camp($select=ID,name,district)',
+                    $filter: 'severity eq 1 and camp/status_code eq \'ACTIVE\' and camp/headcount gt 0',
+                    $orderby: 'standard/sortOrder'
+                  },
+                  sorter: {path: 'camp/name', group: true}
+                }"
+                growing="true" growingThreshold="100">
+                <noData>
+                  <IllustratedMessage illustrationType="sapIllus-SuccessHighFive" title="{i18n>emptyGapsTitle}" description="{view>/text/emptyGaps}" enableVerticalResponsiveness="true"/>
+                </noData>
+                <headerToolbar>
+                  <OverflowToolbar style="Clear">
+                    <Title text="{i18n>tabGaps}" level="H2"/>
+                  </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                  <Column width="14rem"><Text text="{i18n>colIndicator}"/></Column>
+                  <Column hAlign="End" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colOnHand}"/></Column>
+                  <Column hAlign="Center" width="9rem"><Text text="{i18n>colCover}"/></Column>
+                  <Column hAlign="End" minScreenWidth="Tablet" demandPopin="true"><Text text="{view>/text/shortfall}"/></Column>
+                  <Column hAlign="End" width="12rem" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colActions}"/></Column>
+                </columns>
+                <items>
+                  <ColumnListItem>
+                    <cells>
+                      <ObjectIdentifier title="{standard/name}" text="{standard/sector/name}"/>
+                      <ObjectNumber number="{path: 'quantity', targetType: 'any', formatter: 'formatter.decimal'} / {path: 'required', targetType: 'any', formatter: 'formatter.decimal'}"
+                        unit="{standard/unit}"/>
+                      <ObjectStatus state="Error" inverted="true" icon="sap-icon://error"
+                        text="{parts: ['standard/basis', {path: 'daysOfCover', targetType: 'any'}, {path: 'coveragePct', targetType: 'any'}], formatter: 'formatter.coverText'}"/>
+                      <ObjectNumber number="{path: 'shortfall', targetType: 'any', formatter: 'formatter.decimal'}" unit="{standard/unit}" state="Error"/>
+                      <Button text="{i18n>raiseRequests}" icon="sap-icon://request" type="Transparent" press=".onRaiseRequests"/>
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+            </VBox>
+          </IconTabFilter>
+
+          <IconTabFilter key="attention" icon="sap-icon://decision" text="{i18n>tabAttention}" count="{= ${view>/attention}.length }" iconColor="Critical">
+            <VBox class="rgCard" renderType="Bare">
+              <Table id="attention" items="{path: 'view>/attention', templateShareable: false}" sticky="ColumnHeaders" popinLayout="GridSmall"
+                growing="true" growingThreshold="100">
+                <headerToolbar>
+                  <OverflowToolbar style="Clear">
+                    <Title text="{i18n>tabAttention}" level="H2"/>
+                    <ToolbarSpacer/>
+                    <Text text="{i18n>attentionHint}" class="rgHint"/>
+                  </OverflowToolbar>
+                </headerToolbar>
+                <noData>
+                  <IllustratedMessage illustrationType="sapIllus-SuccessHighFive" title="{i18n>emptyAttentionTitle}" description="{i18n>emptyAttentionText}" enableVerticalResponsiveness="true"/>
+                </noData>
+                <columns>
+                  <Column width="24rem"><Text text="{i18n>colAttention}"/></Column>
+                  <Column><Text text="{i18n>colCamp}"/></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colIndicator}"/></Column>
+                </columns>
+                <items>
+                  <ColumnListItem type="Navigation" press=".onOpenAttention">
+                    <cells>
+                      <VBox renderType="Bare">
+                        <ObjectStatus text="{view>label}" state="{view>state}" icon="{view>icon}"/>
+                        <Text text="{view>reason}" visible="{= !!${view>reason} }" class="rgHint sapUiTinyMarginTop" wrapping="true"/>
+                      </VBox>
+                      <Text text="{view>campName}"/>
+                      <Text text="{view>standardName}"/>
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+            </VBox>
+          </IconTabFilter>
+
+          <IconTabFilter key="targets" icon="sap-icon://customize" text="{i18n>tabTargets}" count="{view>/kpi/localTargetsInForce}" iconColor="Neutral">
+            <VBox class="rgCard" renderType="Bare">
+              <Table id="targets" items="{path: 'view>/targets', templateShareable: false}" sticky="ColumnHeaders" popinLayout="GridSmall"
+                growing="true" growingThreshold="100">
+                <headerToolbar>
+                  <OverflowToolbar style="Clear">
+                    <Title text="{i18n>tabTargets}" level="H2"/>
+                    <ToolbarSpacer/>
+                    <Text text="{i18n>targetsHint}" class="rgHint"/>
+                  </OverflowToolbar>
+                </headerToolbar>
+                <noData>
+                  <IllustratedMessage illustrationType="sapIllus-NoEntries" title="{i18n>emptyTargetsTitle}" description="{i18n>emptyTargetsText}" enableVerticalResponsiveness="true"/>
+                </noData>
+                <columns>
+                  <Column><Text text="{i18n>colCamp}"/></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colIndicator}"/></Column>
+                  <Column hAlign="End"><Text text="{i18n>colLocalTarget}"/></Column>
+                  <Column hAlign="End" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colReference}"/></Column>
+                  <Column width="14rem"><Text text="{i18n>colTargetStatus}"/></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colReviewDue}"/></Column>
+                </columns>
+                <items>
+                  <ColumnListItem type="Navigation" press=".onOpenTarget">
+                    <cells>
+                      <Text text="{view>campName}"/>
+                      <Text text="{view>standardName}"/>
+                      <Text text="{view>valueText}"/>
+                      <Text text="{view>referenceText}"/>
+                      <ObjectStatus text="{view>displayStatus}" state="{view>state}" icon="{view>icon}"/>
+                      <Text text="{view>reviewText}"/>
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+            </VBox>
+          </IconTabFilter>
+
+          <IconTabFilter key="transit" icon="sap-icon://shipping-status" text="{i18n>tabTransit}" count="{view>/kpi/pledgesInTransit}" iconColor="Critical">
+            <VBox class="rgCard" renderType="Bare">
+              <Table id="transit" sticky="ColumnHeaders" popinLayout="GridSmall"
+                items="{
+                  path: '/Pledges',
+                  parameters: {
+                    $filter: 'status_code eq \'PLEDGED\' or status_code eq \'PARTIAL\'',
+                    $orderby: 'eta asc,createdAt asc'
+                  }
+                }"
+                growing="true" growingThreshold="100">
+                <noData>
+                  <IllustratedMessage illustrationType="sapIllus-NoActivities" title="{i18n>emptyTransitTitle}" description="{i18n>emptyTransitText}" enableVerticalResponsiveness="true"/>
+                </noData>
+                <columns>
+                  <Column width="14rem"><Text text="{i18n>colDonor}"/></Column>
+                  <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colCamp}"/></Column>
+                  <Column><Text text="{i18n>colItem}"/></Column>
+                  <Column hAlign="End" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colQuantity}"/></Column>
+                  <Column hAlign="Center" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colEta}"/></Column>
+                  <Column hAlign="End" width="16rem" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colActions}"/></Column>
+                </columns>
+                <items>
+                  <ColumnListItem>
+                    <cells>
+                      <ObjectIdentifier title="{donor}" text="{donorContact}"/>
+                      <ObjectIdentifier title="{request/camp/name}" text="{request/camp/district}"/>
+                      <Text text="{request/standard/name}"/>
+                      <VBox renderType="Bare" alignItems="End">
+                        <ObjectNumber number="{path: 'quantity', targetType: 'any', formatter: 'formatter.decimal'}" unit="{request/standard/unit}" emphasized="true"/>
+                        <Text text="{= %{status_code} === 'PARTIAL' ? ${i18n>partlyReceived}.replace('{0}', %{receivedQuantity}) : '' }" visible="{= %{status_code} === 'PARTIAL' }" class="rgHint"/>
+                      </VBox>
+                      <ObjectStatus text="{path: 'eta', targetType: 'any', formatter: '.etaText'}" state="{parts: [{path: 'eta', targetType: 'any'}, {path: 'view>/today'}], formatter: 'formatter.etaState'}"
+                        icon="{= ${eta} ? 'sap-icon://appointment-2' : '' }"/>
+                      <HBox justifyContent="End" renderType="Bare">
+                        <Button text="{i18n>confirmDelivery}" icon="sap-icon://accept" type="Accept" press=".onConfirmDelivery" class="sapUiTinyMarginEnd"/>
+                        <Button text="{i18n>withdraw}" type="Transparent" press=".onWithdraw" visible="{= %{status_code} === 'PLEDGED' }"/>
+                      </HBox>
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+            </VBox>
+          </IconTabFilter>
+        </items>
+      </IconTabBar>
+      <FlexBox id="disclaimer" wrap="Wrap" alignItems="Center" class="rgDisclaimer" renderType="Bare">
+        <core:Icon src="sap-icon://hint" class="sapUiTinyMarginEnd rgHint" decorative="true"/>
+        <Text text="{i18n>disclaimer}" class="rgHint sapUiTinyMarginEnd"/>
+        <Link id="methodologyLink" text="{i18n>methodology}" press=".onMethodology"/>
+      </FlexBox>
+      </VBox>
+    </f:content>
+  </f:DynamicPage>
+</mvc:View>

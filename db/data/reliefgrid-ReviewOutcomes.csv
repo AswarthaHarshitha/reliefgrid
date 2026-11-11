@@ -1,0 +1,3 @@
+code;name;descr
+CONFIRMED;Confirmed;The decision stays in force unchanged until the next review date
+CHANGE_PROPOSED;Change proposed;A replacement or withdrawal was proposed for approval, and the decision stays in force until that takes effect

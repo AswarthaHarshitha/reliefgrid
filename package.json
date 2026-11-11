@@ -1,0 +1,100 @@
+{
+  "name": "reliefgrid",
+  "version": "1.0.0",
+  "description": "Relief camp operations checked against selected Sphere Handbook (2018) indicators: gap analysis, supply requests and donor pledges on SAP CAP and SAP Fiori.",
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "test": "node --test test/*.test.js",
+    "test:ui": "node test/ui/smoke.js && node test/ui/overdue.js && node test/ui/targets.js && node test/ui/households.js && node test/ui/phases.js && node test/ui/functional.js",
+    "build": "cds build --production",
+    "backup": "node scripts/backup-database.js"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "@cap-js/hana": "^3.1.2",
+    "@cap-js/sqlite": "^3.1.2",
+    "@sap/cds": "^10.2.2",
+    "@sap/xssec": "^4.16.0",
+    "express": "^4.22.3"
+  },
+  "devDependencies": {
+    "@cap-js/cds-test": "^1.0.2",
+    "@sap/cds-dk": "^10.2.0",
+    "puppeteer-core": "^25.16.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.5"
+  },
+  "cds": {
+    "i18n": {
+      "folders": [
+        "_i18n"
+      ]
+    },
+    "[development]": {
+      "server": {
+        "host": "localhost"
+      }
+    },
+    "[test]": {
+      "server": {
+        "host": "localhost"
+      }
+    },
+    "requires": {
+      "[development]": {
+        "db": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": "reliefgrid.sqlite"
+          }
+        },
+        "auth": "dummy"
+      },
+      "[test]": {
+        "db": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": ":memory:"
+          }
+        },
+        "auth": "mocked"
+      },
+      "[selfhost]": {
+        "db": {
+          "kind": "sqlite",
+          "credentials": {
+            "url": "/data/reliefgrid.sqlite"
+          }
+        },
+        "auth": {
+          "kind": "basic"
+        }
+      },
+      "[production]": {
+        "db": "hana",
+        "auth": "xsuaa"
+      }
+    },
+    "reliefgrid": {
+      "timeZone": "UTC",
+      "pledges": {
+        "maxOpenPerDonor": 25,
+        "maxPerHour": 20
+      }
+    },
+    "[selfhost]": {
+      "log": {
+        "format": "json"
+      }
+    },
+    "[production]": {
+      "log": {
+        "format": "json"
+      }
+    }
+  }
+}

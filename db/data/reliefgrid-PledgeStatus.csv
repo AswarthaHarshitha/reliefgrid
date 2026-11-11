@@ -1,0 +1,5 @@
+code;name;descr;criticality
+PLEDGED;In transit;Committed by the donor and awaiting delivery;2
+PARTIAL;Partly received;Some goods arrived and more are expected;2
+DELIVERED;Delivered;Received at the camp in full, or closed by a coordinator after part of it arrived;3
+WITHDRAWN;Withdrawn;Withdrawn by the donor or camp;0

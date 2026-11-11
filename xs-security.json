@@ -1,0 +1,43 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Coordinator",
+      "description": "Manage relief camps, stock counts, requests and deliveries"
+    },
+    {
+      "name": "$XSAPPNAME.Administrator",
+      "description": "Change ReliefGrid's planning settings"
+    },
+    {
+      "name": "$XSAPPNAME.Donor",
+      "description": "See open camp needs and pledge supplies (known donor organisations)"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "Coordinator",
+      "description": "Camp coordinator or relief control room",
+      "scope-references": [
+        "$XSAPPNAME.Coordinator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Administrator",
+      "description": "Changes ReliefGrid's planning settings; also assign Coordinator to use the apps",
+      "scope-references": [
+        "$XSAPPNAME.Administrator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Donor",
+      "description": "A known donor organisation: Pledge Board only",
+      "scope-references": [
+        "$XSAPPNAME.Donor"
+      ],
+      "attribute-references": []
+    }
+  ]
+}

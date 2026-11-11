@@ -1,0 +1,161 @@
+/* Methodology and References: Horizon theme parameters only, so light, dark and high-contrast themes stay consistent. */
+
+.rmHeadingIcon {
+  color: var(--sapBrandColor);
+}
+
+.rmSubtitle,
+.rmHint {
+  color: var(--sapContent_LabelColor);
+}
+
+.rmHint {
+  font-size: var(--sapFontSmallSize);
+}
+
+.rmFacts {
+  gap: 0.5rem 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.rmFact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rmFactValue.sapMText {
+  font-family: var(--sapFontHeaderFamily);
+  font-size: var(--sapObjectHeader_Title_FontSize, 1.5rem);
+  color: var(--sapTextColor);
+}
+
+.rmFactText.sapMText {
+  font-size: var(--sapFontHeader5Size);
+  line-height: 2rem;
+}
+
+.rmDisclaimer {
+  max-width: 64rem;
+}
+
+.rmLead {
+  display: block;
+  max-width: 64rem;
+  margin-bottom: 1rem;
+}
+
+.rmPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border: 1px solid var(--sapGroup_ContentBorderColor);
+  border-radius: var(--sapElement_BorderCornerRadius);
+}
+
+.rmLegendRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.rmBadges {
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.rmFigure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border: 1px solid var(--sapGroup_ContentBorderColor);
+  border-radius: var(--sapElement_BorderCornerRadius);
+}
+
+.rmFigureValue.sapMText {
+  font-family: var(--sapFontHeaderFamily);
+  font-size: var(--sapFontHeader3Size);
+  font-weight: bold;
+  color: var(--sapTextColor);
+  font-variant-numeric: tabular-nums;
+}
+
+.rmFigureUnit.sapMText {
+  color: var(--sapContent_LabelColor);
+}
+
+.rmQuote {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 64rem;
+  margin: 1.25rem 0 0.5rem;
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-left: 0.25rem solid var(--sapContent_ForegroundBorderColor);
+}
+
+.rmQuoteText.sapMText {
+  font-style: italic;
+  color: var(--sapTextColor);
+}
+
+.rmReference.sapUiForm {
+  max-width: 64rem;
+}
+
+.rmBlockTitle.sapMTitle {
+  margin: 1rem 0 0.25rem;
+}
+
+.rmIndicator .sapMText,
+.rmList {
+  max-width: 64rem;
+}
+
+.rmList ul {
+  margin: 0.25rem 0 0;
+  padding-left: 1.25rem;
+  color: var(--sapTextColor);
+  font-family: var(--sapFontFamily);
+  font-size: var(--sapFontSize);
+  line-height: 1.5;
+}
+
+.rmList li + li {
+  margin-top: 0.25rem;
+}
+
+.rmSettingsState {
+  gap: 0.75rem 1.5rem;
+  max-width: 64rem;
+  margin-bottom: 1rem;
+}
+
+.rmStrong.sapMText {
+  font-weight: bold;
+}
+
+.rmTable .sapMListTblCell {
+  vertical-align: top;
+}
+
+.rmMono.sapMText {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  word-break: break-all;
+}
+
+@media (max-width: 599px) {
+  .rmFacts {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+}

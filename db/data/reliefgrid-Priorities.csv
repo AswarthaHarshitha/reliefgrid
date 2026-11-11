@@ -1,0 +1,4 @@
+code;name;descr
+1;Critical;Life-threatening gap that needs supplies within days
+2;High;Below the reference requirement but not yet life-threatening
+3;Normal;Replenishment to keep a safe buffer
