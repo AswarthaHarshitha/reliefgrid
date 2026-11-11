@@ -27,7 +27,6 @@ ReliefGrid is decision support, not an official Sphere assessment or certificati
 15. [Repository structure](#repository-structure)
 16. [Known limitations](#known-limitations)
 17. [Future development](#future-development)
-18. [License](#license)
 
 ## Core capabilities
 
@@ -263,7 +262,3 @@ Dockerfile, render.yaml, mta.yaml, xs-security.json   deployment descriptors
 ## Future development
 
 Planned, not implemented: an identity provider for self-hosted deployments, HANA runtime verification with parallel-transaction tests, additional indicators agreed with the domain owner, and offline-capable stock counting for camps with poor connectivity.
-
-## License
-
-MIT, see [LICENSE](LICENSE).
