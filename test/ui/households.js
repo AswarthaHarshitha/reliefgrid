@@ -143,7 +143,8 @@ async function api(method, url, body, user = 'admin') {
     await row.click()
     await hist.page.waitForFunction(() => location.href.includes('/assessmentRecords('), { timeout: 20000 }).catch(() => {})
     await hist.page.waitForFunction(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].some(r => r.innerText.includes('Households')), { timeout: 30000, polling: 500 }).catch(() => {})
-    const rows = await hist.page.evaluate(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].map(r => [...r.children].map(c => c.innerText.trim()).filter(Boolean).join(' | ')))
+    // a narrow screen moves some columns into the row's sub-row; both are read as one line
+    const rows = await hist.page.evaluate(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].map(r => [...r.children, ...(r.nextElementSibling?.classList.contains('sapMListTblSubRow') ? [r.nextElementSibling] : [])].map(c => c.innerText.trim()).filter(Boolean).join(' | ')))
     const containers = rows.find(t => /Water containers/.test(t))
     check(!!containers && /Households/.test(containers) && /\b6\b/.test(containers), `Assessment record: the container line shows its household basis (${(containers || rows.length + ' rows').slice(0, 130)})`)
     const header = await hist.text()
@@ -226,7 +227,7 @@ async function api(method, url, body, user = 'admin') {
     // ---- Donors ----
     const d = await open('/methodology/webapp/index.html', ['The current household size is visible to coordinators and administrators.'], { user: 'donor' })
     check(d.ok && !(await hasButton(d.page, 'Propose a household-size change')), 'Methodology: a donor sees neither the value nor the change button')
-    opened.pop() // the planning figures are refused to donors by design; that refusal is logged by UI5
+    // the methodology page asks which roles the donor has first, so nothing is refused and nothing is exempt
     await d.page.close()
     let refusedCount = 0
     for (const url of [`${R}/HouseholdAssumption`, `${R}/HouseholdAssumptionChanges`, `${R}/HouseholdSizeProposals`, `${R}/CampHouseholds`]) { try { await api('GET', url, null, 'donor') } catch (e) { if (e.status === 403) refusedCount++ } }

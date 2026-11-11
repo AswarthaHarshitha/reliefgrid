@@ -320,7 +320,8 @@ async function api(method, url, body, user = 'admin', extra = {}) {
     const historyRow = await historyPage.page.evaluateHandle(() => [...document.querySelectorAll('.sapMListTblRow')].find(r => r.innerText.includes('Decision took effect')) || document.body)
     await historyRow.click()
     const onRecord = await historyPage.page.waitForFunction(() => location.href.includes('/assessmentRecords(') && document.body.innerText.includes('Indicators as Assessed'), { timeout: 30000, polling: 500 }).then(() => true, () => false)
-    const recordRows = () => historyPage.page.evaluate(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].map(r => [...r.children].map(c => c.innerText.trim()).filter(Boolean).join(' | ')))
+    // a narrow screen moves some columns into the row's sub-row; both are read as one line
+    const recordRows = () => historyPage.page.evaluate(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].map(r => [...r.children, ...(r.nextElementSibling?.classList.contains('sapMListTblSubRow') ? [r.nextElementSibling] : [])].map(c => c.innerText.trim()).filter(Boolean).join(' | ')))
     await historyPage.page.waitForFunction(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].some(r => r.innerText.includes('Local target')), { timeout: 30000, polling: 500 }).catch(() => {})
     const rendered = await recordRows()
     const recordRow = rendered.find(t => /Water/.test(t) && /Local target/.test(t))
@@ -343,7 +344,7 @@ async function api(method, url, body, user = 'admin', extra = {}) {
     const donorPledge = await open('/index.html#SupplyRequest-pledge', ['Open Needs'], { user: 'donor' })
     check(donorPledge.ok, 'Launchpad: the Pledge Board tile opens for a donor')
     await donorPledge.page.close()
-    const donorMethod = await open('/index.html#ReliefMethodology-display', ['Local targets'], { user: 'donor', deniedByDesign: true })
+    const donorMethod = await open('/index.html#ReliefMethodology-display', ['Local targets'], { user: 'donor' })
     check(donorMethod.ok, 'Launchpad: the methodology opens for a donor (the planning figures behind it need a coordinator)')
     await donorMethod.page.close()
     const failed = await open('/index.html', ['could not confirm who you are', 'Sign in again'], { user: 'donor', password: 'wrong', deniedByDesign: true })

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Signed out of ReliefGrid</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f5f6f7; --bg-accent: #e8f1fb; --card: #ffffff; --text: #1d2d3e; --muted: #556b82; --line: #d9dee3;
+        --brand: #0a6ed1; --brand-strong: #0854a0; --on-brand: #ffffff; --ok-bg: #eef7ee; --ok-line: #188918; --focus: #0070f2;
+        --shadow: 0 1px 2px rgba(29, 45, 62, 0.06), 0 8px 24px rgba(29, 45, 62, 0.08);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #12171c; --bg-accent: #16222e; --card: #1d232a; --text: #eaecee; --muted: #a9b4be; --line: #354a5f;
+          --brand: #4db1ff; --brand-strong: #7cc4ff; --on-brand: #0b1a28; --ok-bg: #173a1d; --ok-line: #6fd16f; --focus: #4db1ff;
+          --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0; display: flex; flex-direction: column; line-height: 1.5; color: var(--text);
+        font-family: "72", "72full", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        background: radial-gradient(1200px 600px at 50% -10%, var(--bg-accent), var(--bg) 70%) fixed, var(--bg);
+      }
+      main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+      .card { width: 100%; max-width: 28rem; background: var(--card); border: 1px solid var(--line); border-radius: 1rem; box-shadow: var(--shadow); padding: 2rem; }
+      .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem; }
+      .brand b { font-size: 1.125rem; }
+      h1 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 0.5rem; }
+      p { margin: 0 0 1.25rem; color: var(--muted); }
+      .notice { display: flex; gap: 0.75rem; align-items: flex-start; background: var(--ok-bg); border-left: 4px solid var(--ok-line); border-radius: 0.5rem; padding: 0.75rem 1rem; margin: 0 0 1.5rem; font-size: 0.9375rem; }
+      .button { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 2.75rem; border-radius: 0.5rem; background: var(--brand); color: var(--on-brand); font-weight: 700; text-decoration: none; }
+      .button:hover { background: var(--brand-strong); }
+      .button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+      .hint { margin: 1.25rem 0 0; font-size: 0.8125rem; }
+      @media (max-width: 30rem) { .card { padding: 1.5rem 1.25rem; } }
+    </style>
+    <script>
+      // Basic authentication has no server session to end: the browser keeps the user name and
+      // password and sends them with every request. Replacing them with credentials that are always
+      // refused makes the browser forget the real ones, so the next visit asks to sign in again.
+      (function () {
+        try {
+          var request = new XMLHttpRequest();
+          request.open("GET", "signout-credentials", false, "signed-out", "signed-out");
+          request.send();
+        } catch (e) {
+          // nothing to do: an error here means the credentials were not accepted, which is the point
+        }
+        try {
+          sessionStorage.clear();
+        } catch (e) {
+          // storage may be unavailable; nothing of the session is kept there anyway
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <main>
+      <section class="card" aria-labelledby="title">
+        <div class="brand">
+          <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+            <rect width="40" height="40" rx="10" fill="var(--brand)" />
+            <g fill="var(--on-brand)">
+              <rect x="10" y="10" width="6" height="6" rx="1.5" /><rect x="17" y="10" width="6" height="6" rx="1.5" opacity="0.7" /><rect x="24" y="10" width="6" height="6" rx="1.5" opacity="0.45" />
+              <rect x="10" y="17" width="6" height="6" rx="1.5" opacity="0.7" /><rect x="17" y="17" width="6" height="6" rx="1.5" /><rect x="24" y="17" width="6" height="6" rx="1.5" opacity="0.7" />
+              <rect x="10" y="24" width="6" height="6" rx="1.5" opacity="0.45" /><rect x="17" y="24" width="6" height="6" rx="1.5" opacity="0.7" /><rect x="24" y="24" width="6" height="6" rx="1.5" />
+            </g>
+          </svg>
+          <b>ReliefGrid</b>
+        </div>
+        <h1 id="title">You have signed out</h1>
+        <div class="notice" role="status">The browser no longer sends your user name and password to ReliefGrid.</div>
+        <p>To continue, sign in again, as yourself or as another user.</p>
+        <a class="button" href="index.html">Sign in again</a>
+        <p class="hint">On a shared computer, also close all windows of this browser.</p>
+      </section>
+    </main>
+  </body>
+</html>

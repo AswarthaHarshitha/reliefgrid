@@ -6,7 +6,7 @@
     "start": "cds-serve",
     "watch": "cds watch",
     "test": "node --test test/*.test.js",
-    "test:ui": "node test/ui/smoke.js && node test/ui/overdue.js && node test/ui/targets.js && node test/ui/households.js && node test/ui/phases.js && node test/ui/functional.js",
+    "test:ui": "node test/ui/smoke.js && node test/ui/overdue.js && node test/ui/targets.js && node test/ui/households.js && node test/ui/phases.js && node test/ui/functional.js && node test/ui/session.js",
     "build": "cds build --production",
     "backup": "node scripts/backup-database.js"
   },

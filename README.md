@@ -149,6 +149,7 @@ Key entities (`db/schema.cds`):
 ## Security and governance
 
 - **Authentication:** basic authentication over HTTPS (self-hosted) or XSUAA (SAP BTP). Development and test authentication is refused on any non-loopback address.
+- **Signing out:** basic authentication has no server session, so Sign out (on the home page and in each application's user menu) replaces the credentials the browser has stored with a reserved user that every service refuses; the next visit asks for a user name and password again, for the same or another person.
 - **Authorisation:** role checks on every service, entity and action; donors see an explicit allow-list of fields; the donor role is a controlled list of organisations.
 - **Two-person rule:** decisions and household-size changes are approved by someone other than the proposer; simultaneous actions produce exactly one result (compare-and-set with versions and ETags).
 - **Audit:** append-only assessment history, decision and review history, household and settings change logs, request reviews, stock ledger and supply audit events.
@@ -211,8 +212,8 @@ Results on the released source (Node.js test runner and Puppeteer):
 
 | Suite | Result |
 | --- | --- |
-| `npm test` | 387 of 387 tests passed |
-| `npm run test:ui` | smoke 187, overdue reviews 24, local targets 40, households 24, response phase 10, functional counts 8 checks passed; QUnit 94 of 94 and 20 of 20; no console or page errors |
+| `npm test` | 391 of 391 tests passed |
+| `npm run test:ui` | smoke 187, overdue reviews 24, local targets 40, households 24, response phase 10, functional counts 8, sign-in, sign-out and every page per role 53 checks passed; QUnit 94 of 94 and 20 of 20; no console or page errors |
 | Mutation checks (per stage) | each stage's rules were changed one at a time to confirm the tests fail; surviving mutants are documented as equivalent in the stage records |
 | Upgrade and rollback | verified on a database written by the previous accepted release (70 checks) |
 

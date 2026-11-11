@@ -13,6 +13,8 @@ cds.on('bootstrap', app => {
   require('./srv/lib/clock').assertTimeZone()
   // SEC-03 security headers and SEC-07 no test pages outside development and test, before anything is served
   require('./srv/lib/http-hardening').harden(app)
+  // signing out with basic authentication: the browser's stored credentials are replaced (app/signout.html)
+  require('./srv/lib/signout').install(app)
   // Stage F: liveness and readiness for the hosting platform; no data, no configuration, no sign-in
   app.get('/health', (req, res) => res.json({ status: 'ok' }))
   app.get('/ready', async (req, res) => {

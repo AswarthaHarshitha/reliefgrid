@@ -160,3 +160,7 @@ Ledger and audit: `StockMovements`, `AuditEvents` and `DeliveryReceipts` are rea
 
 Mutation checks on the final source: roadmap stages 29 of 30 (the survivor: removing only the library check for a withdraw-all reason, which CAP's `mandatory` refuses first); regression B4.1 closure 9 of 9, B4.2 20 of 20, B4.3 24 of 24, B4.3 governance 17 of 19 (two equivalent, recorded above), B4.4 10 of 10, B4.5 12 of 13 (the survivor writes `undefined` where the code writes `null`; both store NULL).
 
+### Signing out (11 Nov 2026)
+
+Found while checking every page and sign-in: Sign Out in the launchpad's user menu only reloaded the page, and the home page had no way to sign out, so with basic authentication the browser kept sending the last password. Resolved: `app/signout.html` makes the browser store a reserved user (`srv/lib/signout.js`: `/signout-credentials` accepts only that user, in the services' realm "Users"; every OData request as that user is challenged with 401, before authentication runs). The shell's Sign Out is registered to the same page. Verified in `test/signout.test.js` and in the browser test `test/ui/session.js` (sign out from the home page and from an application's menu; afterwards the next person signs in as themselves in the same window, and nothing is done as the previous user), and against the container configuration with real basic authentication.
+

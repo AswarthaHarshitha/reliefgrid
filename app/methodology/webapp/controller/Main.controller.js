@@ -38,7 +38,16 @@ sap.ui.define([
       model.setProperty("/settingsHistory", []);
       // The JSON file may still be loading; the planning rows are filled in once both are there.
       var loaded = model.getProperty("/planningChoices") ? Promise.resolve() : model.dataLoaded();
-      this._ready = loaded.then(this._loadSettings.bind(this)).then(this._loadHousehold.bind(this));
+      // The planning figures are for coordinators and administrators. Ask first, so a donor's or a
+      // visitor's page shows that they are restricted instead of requesting them and being refused.
+      var access = fetch("/odata/v4/access/access()", { credentials: "same-origin", headers: { accept: "application/json" } })
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .then(function (a) { return !!a.planner; })
+        .catch(function () { return false; });
+      this._ready = Promise.all([loaded, access]).then(function (r) {
+        this._isPlanner = r[1];
+        return this._loadSettings();
+      }.bind(this)).then(this._loadHousehold.bind(this));
     },
 
     // ---------------------------------------------------------------------
@@ -49,11 +58,13 @@ sap.ui.define([
       var relief = this.getOwnerComponent().getModel("relief");
       var model = this.getOwnerComponent().getModel();
       var b = this._bundle;
-      return Promise.all([
+      var restricted = Promise.reject(new Error("planning figures are for coordinators"));
+      restricted.catch(function () {});
+      return (this._isPlanner === false ? restricted : Promise.all([
         relief.bindContext("/PlanningSettings('CURRENT')").requestObject(),
         relief.bindList("/PlanningSettingsChanges", null, null, null, { $orderby: "changedAt desc" }).requestContexts(0, 50),
         relief.bindContext("/planningAccess()").requestObject()
-      ]).then(function (results) {
+      ])).then(function (results) {
         var settings = values(results[0]);
         settings.version = Number(results[0].version);
         var history = results[1].map(function (c) { return c.getObject(); });
@@ -98,12 +109,14 @@ sap.ui.define([
           }
         });
       };
-      return Promise.all([
+      var restricted = Promise.reject(new Error("the household size is for coordinators"));
+      restricted.catch(function () {});
+      return (this._isPlanner === false ? restricted : Promise.all([
         relief.bindContext("/HouseholdAssumption('CURRENT')").requestObject(),
         relief.bindList("/HouseholdAssumptionChanges", null, null, null, { $orderby: "changedAt desc" }).requestContexts(0, 50),
         relief.bindContext("/planningAccess()").requestObject(),
         relief.bindList("/HouseholdSizeProposals", null, null, null, { $filter: "status eq 'PENDING'" }).requestContexts(0, 1)
-      ]).then(function (results) {
+      ])).then(function (results) {
         var a = results[0];
         var history = results[1].map(function (c) { return c.getObject(); });
         var access = results[2];

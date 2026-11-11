@@ -374,7 +374,18 @@ const textIncludes = (...needles) =>
       return dialogText(page)
     }
     // UX-05: Review and Publish Requests shows the preview first; Publish raises exactly what it shows
-    const raiseOnCampPage = async (name, campID, { publish = true } = {}) => {
+    // Opening the camp page can, rarely, race with the app reloading itself; then Puppeteer reports a detached
+    // frame. Only that is retried, once, on a fresh page; any check failure still counts.
+    const raiseOnCampPage = async (name, campID, options = {}) => {
+      try {
+        return await raiseOnCampPageOnce(name, campID, options)
+      } catch (e) {
+        if (!/detached Frame/.test(e.message)) throw e
+        console.log(`      (${name}: the page reloaded while it was read; opened again)`)
+        return raiseOnCampPageOnce(name, campID, options)
+      }
+    }
+    const raiseOnCampPageOnce = async (name, campID, { publish = true } = {}) => {
       const page = await open(browser, name, `/camps/webapp/index.html#/Camps(ID=${campID},IsActiveEntity=true)`, {
         waitFor: textIncludes('Review and Publish Requests', 'Stock & Indicator Gaps')
       })
