@@ -16,3 +16,6 @@ default-env.json
 # tool output
 coverage/
 *.log
+
+# server secrets (deploy/oracle)
+deploy/oracle/secrets.env

@@ -1,0 +1,39 @@
+# ReliefGrid on one server: the app (SQLite on a named volume) behind Caddy, which obtains and
+# renews the HTTPS certificate. Secrets live in secrets.env next to this file (never in Git).
+services:
+  app:
+    build: ../..
+    image: reliefgrid:latest
+    restart: unless-stopped
+    env_file: secrets.env
+    environment:
+      RELIEFGRID_TIME_ZONE: ${RELIEFGRID_TIME_ZONE:-UTC}
+    volumes:
+      - reliefgrid-data:/data
+    expose:
+      - "4004"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4004/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  reliefgrid-data:
+  caddy-data:
+  caddy-config:
