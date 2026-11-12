@@ -322,7 +322,11 @@ async function api(method, url, body, user = 'admin', extra = {}) {
     const onRecord = await historyPage.page.waitForFunction(() => location.href.includes('/assessmentRecords(') && document.body.innerText.includes('Indicators as Assessed'), { timeout: 30000, polling: 500 }).then(() => true, () => false)
     // a narrow screen moves some columns into the row's sub-row; both are read as one line
     const recordRows = () => historyPage.page.evaluate(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].map(r => [...r.children, ...(r.nextElementSibling?.classList.contains('sapMListTblSubRow') ? [r.nextElementSibling] : [])].map(c => c.innerText.trim()).filter(Boolean).join(' | ')))
-    await historyPage.page.waitForFunction(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].some(r => r.innerText.includes('Local target')), { timeout: 30000, polling: 500 }).catch(() => {})
+    // wait for the figures as well as the label: on a slower machine the row's numbers render a moment later
+    await historyPage.page.waitForFunction(() => [...document.querySelectorAll('[id*="RecordDetail"] .sapMListTblRow')].some(r => {
+      const t = r.innerText + ' ' + (r.nextElementSibling?.classList.contains('sapMListTblSubRow') ? r.nextElementSibling.innerText : '')
+      return /Water/.test(t) && /Local target/.test(t) && /25/.test(t) && /15/.test(t)
+    }), { timeout: 30000, polling: 500 }).catch(() => {})
     const rendered = await recordRows()
     const recordRow = rendered.find(t => /Water/.test(t) && /Local target/.test(t))
     check(onRecord && !!recordRow && /25/.test(recordRow) && /15/.test(recordRow),
